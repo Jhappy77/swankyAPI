@@ -67,12 +67,13 @@ class Vehicle_Type(models.Model):
 class Vehicle_Instance(models.Model):
     Serial_no = models.IntegerField(primary_key=True)
     Type_id = models.ForeignKey(Vehicle_Type, on_delete=models.CASCADE)
-    Preview_image_paths = models.CharField()
+    Preview_image_paths = models.CharField(max_length=120)
 
 
 class Rents_Out(models.Model):
     Username = models.ForeignKey(Partner, on_delete=models.CASCADE)
-    Vserial_no = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
+    Vserial_no = models.ForeignKey(
+        Vehicle_Instance, on_delete=models.CASCADE, related_name='Vserial_no_ro')
     Vtype_id = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
     Daily_rate = models.IntegerField()
 
@@ -80,7 +81,8 @@ class Rents_Out(models.Model):
 class Rents(models.Model):
     Username = models.ForeignKey(Renter, on_delete=models.CASCADE)
     Contract_no = models.ForeignKey(Contract, on_delete=models.CASCADE)
-    Vserial_no = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
+    Vserial_no = models.ForeignKey(
+        Vehicle_Instance, on_delete=models.CASCADE, related_name='Vserial_no_r')
     Vtype_id = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
 
 
