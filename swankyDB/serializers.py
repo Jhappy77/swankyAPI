@@ -63,6 +63,11 @@ class Land_VehicleSerializer:
         model = Land_Vehicle
         fields = ("vehicle_type", "max_speed", "fuel_type", "horsepower")
 
+class WatercraftSerializer:
+    class Meta:
+        model = Watercraft
+        fields = ("vehicle_type", "max_speed", "length", "capacity")
+
 class AircraftSerializer:
     class Meta:
         model = Aircraft
