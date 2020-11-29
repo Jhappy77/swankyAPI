@@ -23,12 +23,12 @@ class Person(models.Model):
 
 
 class Renter(models.Model):
-    username = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
     admin_manager = models.CharField(max_length=10)
 
 
 class Partner(models.Model):
-    username = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
     admin_id = models.CharField(max_length=10, primary_key=True)
 
 
@@ -54,32 +54,31 @@ class Manufacturer(models.Model):
     home_country = models.CharField(max_length=100)
     year_founded = models.IntegerField()
 
-
+# The primary key for this model is id. It is auto included and created by Django. 
 class Vehicle_Type(models.Model):
-    id = models.IntegerField(primary_key=True)
     model = models.CharField(max_length=100)
     manufacturer_name = models.ForeignKey(
         Manufacturer, on_delete=models.CASCADE)
     license_type = models.ForeignKey(License_Type, on_delete=models.CASCADE)
     default_img = models.URLField(max_length=200, null=True, blank=True, default=None)
 
+## The primary key for this model is id. (Auto-included by Django)
 class Vehicle_Instance(models.Model):
     serial_no = models.IntegerField()
     type_id = models.ForeignKey(Vehicle_Type, on_delete=models.CASCADE)
-    preview_image_paths = models.URLField(max_length=120)
-
+    preview_image_url = models.URLField(max_length=120, null=True, blank=True, default=None)
 
     # This forces the combination of type and serial number to be unique
     class Meta:
         unique_together = (("serial_no", "type_id"),)
 
 class Rents_Out(models.Model):
-    username = models.ForeignKey(Partner, on_delete=models.CASCADE)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
     daily_rate = models.IntegerField()
 
 class Rents(models.Model):
-    username = models.ForeignKey(Renter, on_delete=models.CASCADE)
+    renter = models.ForeignKey(Renter, on_delete=models.CASCADE)
     contract_no = models.ForeignKey(Contract, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
 
