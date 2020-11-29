@@ -66,7 +66,8 @@ class Vehicle_Type(models.Model):
 class Vehicle_Instance(models.Model):
     serial_no = models.IntegerField()
     type_id = models.ForeignKey(Vehicle_Type, on_delete=models.CASCADE)
-    preview_image_paths = models.URLField(max_length=200)
+    preview_image_paths = models.URLField(max_length=120)
+
 
     # This forces the combination of type and serial number to be unique
     class Meta:
@@ -81,6 +82,7 @@ class Rents(models.Model):
     username = models.ForeignKey(Renter, on_delete=models.CASCADE)
     contract_no = models.ForeignKey(Contract, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
+
 
 
 class Spacecraft(models.Model):
