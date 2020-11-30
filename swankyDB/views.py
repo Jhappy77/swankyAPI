@@ -61,17 +61,17 @@ class getAllLicense_Types(generics.ListAPIView):
     queryset = License_Type.objects.all()
     serializer_class = License_TypeSerializer
 
-class getLicense_Type(APIView):
-    def get(self, request):
-        if(request.method != 'GET'):
-            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-        query_type = request.query_params.get('query_type', None)
-        if ((query_type is None)):
-            return Response({'Error': 'Query must include license type as query_type'}, status=status.HTTP_400_BAD_REQUEST)
-        license_list = License_Type.objects.filter(type=query_type)
-        if not license_list.exists():
-            return Response({'Error': 'No License of requested type exists'}, status=status.HTTP_204_NO_CONTENT)
-        return Response(Vehicle_InstanceSerializer(license_list[0]).data)
+# class getLicense_Type(APIView):
+#     def get(self, request):
+#         if(request.method != 'GET'):
+#             return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
+#         query_type = request.query_params.get('query_type', None)
+#         if ((query_type is None)):
+#             return Response({'Error': 'Query must include license type as query_type'}, status=status.HTTP_400_BAD_REQUEST)
+#         license_list = License_Type.objects.filter(type=query_type)
+#         if not license_list.exists():
+#             return Response({'Error': 'No License of requested type exists'}, status=status.HTTP_204_NO_CONTENT)
+#         return Response(Vehicle_InstanceSerializer(license_list[0]).data)
 
 
 #TODO: In the future we may want to consider making this use self.request.user instead of query_params
@@ -205,6 +205,10 @@ executive decision to not make a view for manufacturer
 deal with it, chump 
         (⌐■_■)
 """
+
+class saveRentOut(generics.CreateAPIView):
+    queryset = Rents_Out.objects.all
+    serializer_class = Rents_OutSerializer
 
 #TODO: Change this to be vehicles rented out by a certain user
 class getRentedOutVehicles(generics.ListAPIView):

@@ -11,9 +11,12 @@ urlpatterns = [
     # For a renter to save a license associated with them
     path('save-license', views.saveLicense.as_view(), name='Save License'),
 
-    # Get license types. Can be used to create enums for registering licenses.
+    # Get all license types. Can be used to create enums for registering licenses.
     path('license-types', views.getAllLicense_Types.as_view(), name='License Types'),
 
+    # Get a license of type specified, if it exists
+    # path('get-license-type', views.getLicense_Type.as_view(), name='Get License Type'),
+    
     # # Check if a renter is allowed to rent a certain type of vehicle.
     # # Passes a vehicleTypeId, and a renterId. 
     # # Returns true if the renter is allowed, false if they aren't.
