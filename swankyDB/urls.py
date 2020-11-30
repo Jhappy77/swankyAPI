@@ -1,3 +1,4 @@
+from swankyDB.views import getAvailableSpacecrafts, getLicenses, getVehicleInstances
 from django.urls import path 
 from . import views 
 
@@ -19,7 +20,7 @@ urlpatterns = [
     # path('can-rent', name='Can rent'),
 
     # #Returns all the licenses owned by the specified renter
-    # path('license', name='licenses'),
+    path('licenses', views.getLicenses.as_view(), name='licenses'),
 
 
     ############### RENTING #####################
@@ -45,10 +46,12 @@ urlpatterns = [
     # #Should return all vehicle types.
     # path('vehicle-types', name='Vehicle Types'),
 
+
+    path('vehicle-instances', views.getVehicleInstances.as_view(), name='Vehicle Instances'),
     # #Query the spacecraft instances. You should be able to filter by availabilities by date,
     # #filter by minPrice and maxPrice, thrust, and manufacturers
     # #use generics.ListAPIView
-    # path('spacecrafts', name='Spacecrafts'),
+    path('spacecrafts', views.getAvailableSpacecrafts.as_view(), name='Spacecrafts'),
 
     # #Query the land vehicle instances. You should be able to filter by availabilities by date,
     # #filter by minPrice and maxPrice, max_speed, and manufacturers

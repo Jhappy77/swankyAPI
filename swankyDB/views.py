@@ -73,21 +73,16 @@ class getLicense_Type(APIView):
             return Response({'Error': 'No License of requested type exists'}, status=status.HTTP_204_NO_CONTENT)
         return Response(Vehicle_InstanceSerializer(license_list[0]).data)
 
-class getLicenses(APIView):
-    
-    myQueryset = License.objects.all()
+#TODO: In the future we may want to consider making this use self.request.user instead of query_params
+# Only if we decide to rework permissions
+class getLicenses(generics.ListAPIView):
     serializer_class = LicenseSerializer
-
-    # def get(self, request):
-    #     if(request.method != 'GET'):
-    #         return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-    #     query_id = request.query_params.get('query_id', None)
-    #     if ((query_id is None)):
-    #         return Response({'Error': 'Query must include license id as query_id'}, status=status.HTTP_400_BAD_REQUEST)
-    #     license_list = License.objects.filter(license_id=query_id)
-    #     if not license_list.exists():
-    #         return Response({'Error': 'No License with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
-    #     return Response(LicenseSerializer(license_list[0]).data)
+    def get_queryset(self):
+        myrenter = self.request.query_params.get('renter', None)
+        queryset = License.objects.all()
+        if myrenter is not None:
+            queryset = queryset.filter(renter=myrenter)
+        return queryset
 
 
 ############### USERS ##################
@@ -198,15 +193,11 @@ class getRentedOutVehicles(generics.ListAPIView):
     queryset = Rents_Out.objects.all()
     serializer_class = Rents_OutSerializer
 
-#TODO: 
 class getAllVehicle_Instances(generics.ListAPIView):
     queryset = Vehicle_Instance.objects.all()
     serializer_class = Vehicle_InstanceSerializer
 
 
-class getAllRented(generics.ListAPIView):
-    queryset = Rents.objects.all()
-    serializer_class = RentsSerializer
 
 class getAllRentedBy(APIView):
     def get(self, request):
@@ -239,10 +230,27 @@ class getVehicle_Instance(APIView):
         return Response(Vehicle_InstanceSerializer(vehicle_list[0]).data)
 
 
-class getAllSpacecrafts(generics.ListAPIView):
-    queryset = Spacecraft
+class getVehicleInstances(generics.ListAPIView):
+    serializer_class = Vehicle_InstanceSerializer
+    def get_queryset(self):
+        queryset = Rents_Out.objects.all().select_related('vehicle')
+        minPrice = self.request.query_params.get('minPrice', None)
+        if minPrice is not None:
+            queryset = queryset.filter(daily_rate__gte=minPrice)
+        return queryset
+
+
+class getAvailableSpacecrafts(generics.ListAPIView):
     serializer_class = SpacecraftSerializer
 
+    def get_queryset(self):
+
+        queryset = Spacecraft.objects.all().select_related("vehicle_type")
+        manufacturer = self.request.query_params.get('manufacturer', None)
+        if manufacturer is not None:
+            queryset = queryset.filter(vehicle_type__manufacturer_name=manufacturer)
+        
+        return queryset
 
 class getAllLand_Vehicles(generics.ListAPIView):
     queryset = Land_Vehicle

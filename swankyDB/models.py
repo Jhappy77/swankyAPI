@@ -33,14 +33,12 @@ class Partner(models.Model):
     admin_id = models.ForeignKey(Admin_User, on_delete=models.SET_NULL, null=True, blank=True, default=None)
 
 
-
 ###### VEHICLE MODELS ###############
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=100)
     home_country = models.CharField(max_length=100)
     year_founded = models.IntegerField()
-
 
 
 # The primary key for this model is id. It is auto included and created by Django. 
@@ -64,7 +62,7 @@ class Vehicle_Instance(models.Model):
 class Spacecraft(models.Model):
     vehicle_type = models.ForeignKey(Vehicle_Type, on_delete=models.CASCADE)
     max_weight = models.IntegerField()
-    max_thrust = models.CharField(max_length=100)
+    max_thrust = models.IntegerField()
     fuel_type = models.CharField(max_length=100)
 
 
