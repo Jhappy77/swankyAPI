@@ -37,10 +37,12 @@ urlpatterns = [
     # path('register-rent', name='Register vehicle to rent out'),
     
     # # For a renter to rent out a vehicle.
-    # # Should pass a vehicleInstanceId, startDate, endDate, money, and renter
+    # # Should pass a startDate, endDate, money to saveContracts
+    path('make-contract', views.saveContract.as_view(), name='Make contract'),
+    # # Should pass a vehicleInstanceId and renter to saveRents
     # # Should create a contract tuple
     # # Should then make a RENTS tuple for the contract, renter, and vehicle
-    # path('rent-vehicle', name='Rent vehicle'),
+    path('rent-vehicle', views.saveRents.as_view(), name='Rent vehicle'),
 
 
 ################### VEHICLES ###########################

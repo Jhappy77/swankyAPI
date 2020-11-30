@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.generics import CreateAPIView
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -183,7 +184,7 @@ class searchForPartner(APIView):
 
 #Returns the info for a "RENTS" object, including the contract associated with it. 
 #TODO: Add ability to filter these by user
-class getRentInfo(generics.CreateAPIView):
+class getRentInfo(generics.ListAPIView):
     queryset = Rents.objects.all()
     serializer_class = RentsSerializer
 
@@ -205,6 +206,46 @@ executive decision to not make a view for manufacturer
 deal with it, chump 
         (⌐■_■)
 """
+
+class saveRents(generics.CreateAPIView):
+    queryset = Rents.objects.all()
+    serializer_class = RentsPostSerializer
+    # def get(self, request):
+    #     if(request.method != 'GET'):
+    #         return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    #     vinst_id = request.query_params.get('vinst_id', None)
+    #     if ((vinst_id is None)):
+    #         return Response({'Error': 'Query must include vehicle instance id as vinst_id'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    #     renter_id = request.query_params.get('renter_id', None)
+    #     if ((renter_id is None)):
+    #         return Response({'Error': 'Query must include renter id as renter_id'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    #     contract_id = request.query_params.get('contract_id', None)
+    #     if ((contract_id is None)):
+    #         return Response({'Error': 'Query must include contract id as contract_id'}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class saveContract(generics.CreateAPIView):
+    queryset = Contract.objects.all()
+    serializer_class = ContractSerializer
+    # def get(self, request):
+    #     if(request.method != 'GET'):
+    #         return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    #     start_date = request.query_params.get('start_date', None)
+    #     if ((start_date is None)):
+    #         return Response({'Error': 'Query must include contract start date as start_date'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    #     end_date = request.query_params.get('end_date', None)
+    #     if ((end_date is None)):
+    #         return Response({'Error': 'Query must include contract end date as end_date'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    #     money = request.query_params.get('money', None)
+    #     if ((money is None)):
+    #         return Response({'Error': 'Query must include contract price as money'}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class saveRentOut(generics.CreateAPIView):
     queryset = Rents_Out.objects.all
