@@ -53,7 +53,7 @@ class Vehicle_TypeSerializer(serializers.ModelSerializer):
 class Vehicle_InstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle_Instance
-        fields = ("id", "serial_no", "type_id", "preview_image_paths")
+        fields = ("id", "serial_no", "type_id", "preview_image_url")
 
 class SpacecraftSerializer(serializers.ModelSerializer):
     vehicle_type = Vehicle_TypeSerializer("vehicle_type")
@@ -117,6 +117,7 @@ class RentsPostSerializer(serializers.ModelSerializer):
         fields = ("renter", "vehicle", "contract_no")
 
 class Rents_OutSerializer(serializers.ModelSerializer):
+    vehicle = Vehicle_InstanceSerializer("vehicle")
     class Meta:
         model = Rents_Out
         fields = ("partner", "vehicle", "daily_rate")
