@@ -11,19 +11,15 @@ from .serializers import *
 
 from datetime import datetime, timedelta
 
-"""
-we should probably add some authentication stuff, so for example
-only admins can search for persons/renters/etc. or for a license
-is that what you also meant here?
-                                |
-                                |
-                                V
-"""
-# Don't do anything with the User Model just yet. Django has some predefined user
-# stuff that we should probably use instead, I will look into it tomorrow morning
 
-# Saves a licenses' information
-# (This is a template view so we don't have to do much work. More complex views will require more work)
+# Put this decorator above every view that we want restricted
+from django.contrib.auth.decorators import login_required
+# @login_required(login_url=OUR_LOGIN_URL)
+# This seems to be more for pages than API endpoints
+
+# For API endpoints:
+#https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
+
 """
 class name(generics.CreateAPIView):
     queryset = Sometype.objects.all()
@@ -53,10 +49,48 @@ class searchforsomething(APIView):
 """
 
 
+######### LICENSES #############
+
+# Saves a licenses' information
+# (This is a template view so we don't have to do much work. More complex views will require more work)
 class saveLicense(generics.CreateAPIView):
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
+class getAllLicense_Types(generics.ListAPIView):
+    queryset = License_Type.objects.all()
+    serializer_class = License_TypeSerializer
+
+class getLicense_Type(APIView):
+    def get(self, request):
+        if(request.method != 'GET'):
+            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
+        query_type = request.query_params.get('query_type', None)
+        if ((query_type is None)):
+            return Response({'Error': 'Query must include license type as query_type'}, status=status.HTTP_400_BAD_REQUEST)
+        license_list = License_Type.objects.filter(type=query_type)
+        if not license_list.exists():
+            return Response({'Error': 'No License of requested type exists'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(Vehicle_InstanceSerializer(license_list[0]).data)
+
+class getLicenses(APIView):
+    
+    myQueryset = License.objects.all()
+    serializer_class = LicenseSerializer
+
+    # def get(self, request):
+    #     if(request.method != 'GET'):
+    #         return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
+    #     query_id = request.query_params.get('query_id', None)
+    #     if ((query_id is None)):
+    #         return Response({'Error': 'Query must include license id as query_id'}, status=status.HTTP_400_BAD_REQUEST)
+    #     license_list = License.objects.filter(license_id=query_id)
+    #     if not license_list.exists():
+    #         return Response({'Error': 'No License with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
+    #     return Response(LicenseSerializer(license_list[0]).data)
+
+
+############### USERS ##################
 
 """
 figured admins who search for person/client/renter/partner
@@ -130,10 +164,15 @@ class searchForPartner(APIView):
         return Response(results)
 
 
-class getContracts(generics.CreateAPIView):
-    queryset = Contract.objects.all()
-    serializer_class = ContractSerializer
 
+###################### RENTING ########################
+
+
+#Returns the info for a "RENTS" object, including the contract associated with it. 
+#TODO: Add ability to filter these by user
+class getRentInfo(generics.CreateAPIView):
+    queryset = Rents.objects.all()
+    serializer_class = RentsSerializer
 
 class searchForContract(APIView):
     def get(self, request):
@@ -154,102 +193,20 @@ deal with it, chump
         (⌐■_■)
 """
 
-
-class getRentedOutVehicles(generics.CreateAPIView):
+#TODO: Change this to be vehicles rented out by a certain user
+class getRentedOutVehicles(generics.ListAPIView):
     queryset = Rents_Out.objects.all()
     serializer_class = Rents_OutSerializer
 
-
-"""
-could have another to search for a certain kind of vehicle...
-"""
-
-
-class getAllVehicle_Instances(generics.CreateAPIView):
+#TODO: 
+class getAllVehicle_Instances(generics.ListAPIView):
     queryset = Vehicle_Instance.objects.all()
     serializer_class = Vehicle_InstanceSerializer
 
 
-class getVehicle_Instance(APIView):
-    def get(self, request):
-        if(request.method != 'GET'):
-            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-        query_sernum = request.query_params.get('query_sernum', None)
-        if ((query_sernum is None)):
-            return Response({'Error': 'Query must include vehicle serial number as query_sernum'}, status=status.HTTP_400_BAD_REQUEST)
-        vehicle_list = Vehicle_Instance.objects.filter(serial_no=query_sernum)
-        if not vehicle_list.exists():
-            return Response({'Error': 'No Contract with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
-        return Response(Vehicle_InstanceSerializer(vehicle_list[0]).data)
-
-
-class getAllSpacecrafts(generics.CreateAPIView):
-    queryset = Spacecraft
-    serializer_class = SpacecraftSerializer
-
-
-class getAllLand_Vehicles(generics.CreateAPIView):
-    queryset = Land_Vehicle
-    serializer_class = Land_VehicleSerializer
-
-
-class getAllAircrafts(generics.CreateAPIView):
-    queryset = Aircraft
-    serializer_class = AircraftSerializer
-
-
-class getAllWatercrafts(generics.CreateAPIView):
-    queryset = Watercraft
-    serializer_class = WatercraftSerializer
-
-
-class getVehicleTypes(generics.CreateAPIView):
-    queryset = Vehicle_Type
-    serializer_class = Vehicle_TypeSerializer
-
-
-"""
-USERUSERUSERUSERUSERUSERUSERUSERUSERUSERUSERUSERUSER
-user stuff goes here USERUSERUSERUSERUSERUSERUSERUSER
-USERUSERUSERUSERUSERUSERUSERUSERUSERUSERUSERUSERUSER
-"""
-
-
-class getAllLicense_Types(generics.CreateAPIView):
-    queryset = License_Type
-    serializer_class = License_TypeSerializer
-
-
-class getLicense_Type(APIView):
-    def get(self, request):
-        if(request.method != 'GET'):
-            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-        query_type = request.query_params.get('query_type', None)
-        if ((query_type is None)):
-            return Response({'Error': 'Query must include license type as query_type'}, status=status.HTTP_400_BAD_REQUEST)
-        license_list = License_Type.objects.filter(type=query_type)
-        if not license_list.exists():
-            return Response({'Error': 'No License of requested type exists'}, status=status.HTTP_204_NO_CONTENT)
-        return Response(Vehicle_InstanceSerializer(license_list[0]).data)
-
-
-class getLicense(APIView):
-    def get(self, request):
-        if(request.method != 'GET'):
-            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-        query_id = request.query_params.get('query_id', None)
-        if ((query_id is None)):
-            return Response({'Error': 'Query must include license id as query_id'}, status=status.HTTP_400_BAD_REQUEST)
-        license_list = License.objects.filter(license_id=query_id)
-        if not license_list.exists():
-            return Response({'Error': 'No License with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
-        return Response(LicenseSerializer(license_list[0]).data)
-
-
-class getAllRented(generics.CreateAPIView):
+class getAllRented(generics.ListAPIView):
     queryset = Rents.objects.all()
     serializer_class = RentsSerializer
-
 
 class getAllRentedBy(APIView):
     def get(self, request):
@@ -267,10 +224,41 @@ class getAllRentedBy(APIView):
         return Response(results)
 
 
-"""
-this was clutch. thanks!!!
-  |
-  |
-  V
-"""
-# If you want to make views, you can see the views I made at https://github.com/Jhappy77/swagadellicAPI/tree/main/swagDB in views.py for inspiration
+######################### VEHICLES ##############################
+
+class getVehicle_Instance(APIView):
+    def get(self, request):
+        if(request.method != 'GET'):
+            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
+        query_sernum = request.query_params.get('query_sernum', None)
+        if ((query_sernum is None)):
+            return Response({'Error': 'Query must include vehicle serial number as query_sernum'}, status=status.HTTP_400_BAD_REQUEST)
+        vehicle_list = Vehicle_Instance.objects.filter(serial_no=query_sernum)
+        if not vehicle_list.exists():
+            return Response({'Error': 'No Contract with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(Vehicle_InstanceSerializer(vehicle_list[0]).data)
+
+
+class getAllSpacecrafts(generics.ListAPIView):
+    queryset = Spacecraft
+    serializer_class = SpacecraftSerializer
+
+
+class getAllLand_Vehicles(generics.ListAPIView):
+    queryset = Land_Vehicle
+    serializer_class = Land_VehicleSerializer
+
+
+class getAllAircrafts(generics.ListAPIView):
+    queryset = Aircraft
+    serializer_class = AircraftSerializer
+
+
+class getAllWatercrafts(generics.ListAPIView):
+    queryset = Watercraft
+    serializer_class = WatercraftSerializer
+
+
+class getVehicleTypes(generics.ListAPIView):
+    queryset = Vehicle_Type
+    serializer_class = Vehicle_TypeSerializer
