@@ -9,44 +9,34 @@ from rest_framework import status
 from .models import *
 from .serializers import *
 
-from datetime import datetime, timedelta
+    #        ____  __.---""---.__  ____
+    #       /####\/              \/####\
+    #      (   /\ )              ( /\   )
+    #       \____/                \____/
+    #     __/                          \__
+    #  .-"    .                      .    "-.
+    #  |  |   \.._                _../   |  |
+    #   \  \    \."-.__________.-"./    /  /
+    #     \  \    "--.________.--"    /  /
+    #   ___\  \_                    _/  /___
+    # ./    )))))                  (((((    \.
+    # \                                      /
+    #  \           \_          _/           /
+    #    \    \____/""-.____.-""\____/    /
+    #      \    \                  /    /
+    #       \.  .|                |.  ./
+    #     ." / |  \              /  | \  ".
+    #  ."  /   |   \            /   |   \   ".
+    # /.-./.--.|.--.\          /.--.|.--.\.-.|
+    # Hippity hoppity, this is our '''intellectual''' property
 
-
+#TODO: In the future, consider adding authentication
 # Put this decorator above every view that we want restricted
 from django.contrib.auth.decorators import login_required
 # @login_required(login_url=OUR_LOGIN_URL)
 # This seems to be more for pages than API endpoints
-
 # For API endpoints:
 #https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
-
-"""
-class name(generics.CreateAPIView):
-    queryset = Sometype.objects.all()
-    serializer_class = SometypeSerializer
-
-OR
-
-class searchforsomething(APIView):
-    def get(self, request):
-        if(request.method != 'GET'):
-            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-        query_param = request.query_params.get('query_param', None)
-        if ((query_param is None)):
-            return Response({'Error': 'Query must include query_param'}, status=status.HTTP_400_BAD_REQUEST)
-        some_list = some_list_type.objects.filter(param=query_param)
-        if not some_list.exists():
-            return Response({'Error': 'No Sometype with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
-        
-                EITHER DO THIS FOR LIST OF RESULTS:
-        results = []
-        for x in some_list:
-            results.append(SometypeSerializer(x.param OR JUST x).data)
-        return Response(results)
-        
-                OR DO THIS FOR SINGLE RESULT:
-        return Response(SometypeSerializer(some_list[0]).data)
-"""
 
 
 ######### LICENSES #############
@@ -87,15 +77,6 @@ class getLicenses(generics.ListAPIView):
 
 
 ############### USERS ##################
-
-"""
-figured admins who search for person/client/renter/partner
-would be more likely to searh using name instead of ssn (but we could do both)
-    |
-    |
-    |
-    V
-"""
 
 class savePerson(generics.CreateAPIView):
     queryset = Person.objects.all()
