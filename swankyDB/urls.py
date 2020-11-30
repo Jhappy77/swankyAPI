@@ -1,4 +1,4 @@
-from swankyDB.views import getAvailableSpacecrafts, getLicenses, getVehicleInstances
+from swankyDB.views import getAircrafts, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts
 from django.urls import path 
 from . import views 
 
@@ -25,6 +25,13 @@ urlpatterns = [
 
     ############### RENTING #####################
     
+
+    path('rentables', views.getRentables.as_view(), name='Vehicles that are being rented out by partners'),
+
+
+    path('rents', views.getRentedOutVehicles.as_view(), name="Vehicles being rented by a renter"),
+
+    ## In the future, implement
     # # For a partner registering a vehicle to rent.
     # #Should pass a partner, a dailyRate ($), a vehicleTypeId, and a serialNumber (optional: preview image url)
     # #Should create a tuple in the VehicleInstance table with the proper values, then a table
@@ -46,8 +53,6 @@ urlpatterns = [
     # #Should return all vehicle types.
     # path('vehicle-types', name='Vehicle Types'),
 
-
-    path('vehicle-instances', views.getVehicleInstances.as_view(), name='Vehicle Instances'),
     # #Query the spacecraft instances. You should be able to filter by availabilities by date,
     # #filter by minPrice and maxPrice, thrust, and manufacturers
     # #use generics.ListAPIView
@@ -56,20 +61,17 @@ urlpatterns = [
     # #Query the land vehicle instances. You should be able to filter by availabilities by date,
     # #filter by minPrice and maxPrice, max_speed, and manufacturers
     # #use generics.ListAPIView
-    # path('land-vehicles', name='Land Vehicles'),
+    path('land-vehicles', views.getLand_Vehicles.as_view(), name='Land Vehicles'),
 
     # #Query the watercraft instances. You should be able to filter by availabilities by date,
     # #filter by minPrice and maxPrice, max_speed, capacity and manufacturers
     # #use generics.ListAPIView
-    # path('watercrafts', name='Watercrafts'),
+    path('watercrafts', views.getWatercrafts.as_view(), name='Watercrafts'),
 
     
     # #Query the watercraft instances. You should be able to filter by availabilities by date,
     # #filter by minPrice and maxPrice, max_speed, capacity and manufacturers
     # #use generics.ListAPIView
-    # path('aircrafts', name='Aircrafts'),
-
-
-    # # Add any more you think are necessary. There will be some user stuff, but I can take care of that.
+    path('aircrafts', views.getAircrafts.as_view(), name='Aircrafts'),
     
 ]

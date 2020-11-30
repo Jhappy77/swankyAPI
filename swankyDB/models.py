@@ -66,9 +66,9 @@ class Vehicle_Type(models.Model):
         max_length=200, null=True, blank=True, default=None)
     def __str__(self):
         return str(self.model) + " (Manufacturer = " + str(self.manufacturer_name) + ")"
+
+
 # The primary key for this model is id. (Auto-included by Django)
-
-
 class Vehicle_Instance(models.Model):
     serial_no = models.IntegerField()
     type_id = models.ForeignKey(Vehicle_Type, on_delete=models.CASCADE)

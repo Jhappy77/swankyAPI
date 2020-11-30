@@ -206,15 +206,50 @@ deal with it, chump
         (⌐■_■)
 """
 
-#TODO: Change this to be vehicles rented out by a certain user
-class getRentedOutVehicles(generics.ListAPIView):
-    queryset = Rents_Out.objects.all()
+# Vehicles that are rentable (Appear in RENTS_OUT table)
+class getRentables(generics.ListAPIView):
     serializer_class = Rents_OutSerializer
+    def get_queryset(self):
+        queryset = Rents_Out.objects.all().select_related('vehicle')
+        minPrice = self.request.query_params.get('minPrice', None)
+        if minPrice is not None:
+            queryset = queryset.filter(daily_rate__gte=minPrice)
+        maxPrice = self.request.query_params.get('maxPrice', None)
+        if maxPrice is not None:
+            queryset = queryset.filter(daily_rate__lte=maxPrice)
+
+        
+        partner = self.request.query_params.get('partner', None)
+        if partner is not None:
+            queryset = queryset.filter(partner=partner)
+
+        return queryset
+
+# Vehicles that are in the RENTS table (Can filter by renter)
+class getRentedOutVehicles(generics.ListAPIView):
+
+    serializer_class = RentsSerializer
+    def get_queryset(self):
+        queryset = Rents.objects.all().select_related('vehicle')
+        #TODO: In the future, add filter by dates?
+
+        # minPrice = self.request.query_params.get('minPrice', None)
+        # if minPrice is not None:
+        #     queryset = queryset.filter(daily_rate__gte=minPrice)
+        # maxPrice = self.request.query_params.get('maxPrice', None)
+        # if maxPrice is not None:
+        #     queryset = queryset.filter(daily_rate__lte=maxPrice)
+
+
+        renter = self.request.query_params.get('renter', None)
+        if renter is not None:
+            queryset = queryset.filter(renter=renter)
+
+        return queryset
 
 class getAllVehicle_Instances(generics.ListAPIView):
     queryset = Vehicle_Instance.objects.all()
     serializer_class = Vehicle_InstanceSerializer
-
 
 
 class getAllRentedBy(APIView):
@@ -248,16 +283,6 @@ class getVehicle_Instance(APIView):
         return Response(Vehicle_InstanceSerializer(vehicle_list[0]).data)
 
 
-class getVehicleInstances(generics.ListAPIView):
-    serializer_class = Vehicle_InstanceSerializer
-    def get_queryset(self):
-        queryset = Rents_Out.objects.all().select_related('vehicle')
-        minPrice = self.request.query_params.get('minPrice', None)
-        if minPrice is not None:
-            queryset = queryset.filter(daily_rate__gte=minPrice)
-        return queryset
-
-
 class getAvailableSpacecrafts(generics.ListAPIView):
     serializer_class = SpacecraftSerializer
 
@@ -268,22 +293,38 @@ class getAvailableSpacecrafts(generics.ListAPIView):
         if manufacturer is not None:
             queryset = queryset.filter(vehicle_type__manufacturer_name=manufacturer)
         
+        
         return queryset
 
-class getAllLand_Vehicles(generics.ListAPIView):
-    queryset = Land_Vehicle
+def filterVehicleQueries(query_params, queryset):
+        thequeryset = queryset.objects.all().select_related("vehicle_type")
+        manufacturer = query_params.get('manufacturer', None)
+        if manufacturer is not None:
+            thequeryset = thequeryset.filter(vehicle_type__manufacturer_name=manufacturer)
+        return thequeryset
+
+
+class getLand_Vehicles(generics.ListAPIView):
     serializer_class = Land_VehicleSerializer
+    def get_queryset(self):
+        queryset = filterVehicleQueries(self.request.query_params, Land_Vehicle)
+        
+        
+        return queryset
 
-
-class getAllAircrafts(generics.ListAPIView):
-    queryset = Aircraft
+class getAircrafts(generics.ListAPIView):
     serializer_class = AircraftSerializer
+    def get_queryset(self):
+        queryset = filterVehicleQueries(self.request.query_params, Aircraft)
+        return queryset
 
 
-class getAllWatercrafts(generics.ListAPIView):
+class getWatercrafts(generics.ListAPIView):
     queryset = Watercraft
     serializer_class = WatercraftSerializer
-
+    def get_queryset(self):
+        queryset = filterVehicleQueries(self.request.query_params, Watercraft)
+        return queryset
 
 class getVehicleTypes(generics.ListAPIView):
     queryset = Vehicle_Type
