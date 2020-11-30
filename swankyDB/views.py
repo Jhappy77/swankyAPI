@@ -74,7 +74,6 @@ class getLicense_Type(APIView):
         return Response(Vehicle_InstanceSerializer(license_list[0]).data)
 
 class getLicenses(APIView):
-    
     myQueryset = License.objects.all()
     serializer_class = LicenseSerializer
 
@@ -100,6 +99,11 @@ would be more likely to searh using name instead of ssn (but we could do both)
     |
     V
 """
+
+class savePerson(generics.CreateAPIView):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+
 class searchForPerson(APIView):
     def get(self, request):
         if(request.method != 'GET'):
@@ -115,6 +119,10 @@ class searchForPerson(APIView):
             results.append(PersonSerializer(x).data)
         return Response(results)
 
+
+class saveClient(generics.CreateAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
 
 class searchForClient(APIView):
     def get(self, request):
@@ -132,6 +140,10 @@ class searchForClient(APIView):
         return Response(results)
 
 
+class saveRenter(generics.CreateAPIView):
+    queryset = Renter.objects.all()
+    serializer_class = RenterSerializer
+
 class searchForRenter(APIView):
     def get(self, request):
         if(request.method != 'GET'):
@@ -147,6 +159,10 @@ class searchForRenter(APIView):
             results.append(RenterSerializer(x).data)
         return Response(results)
 
+
+class savePartner(generics.CreateAPIView):
+    queryset = Partner.objects.all()
+    serializer_class = PartnerSerializer
 
 class searchForPartner(APIView):
     def get(self, request):
