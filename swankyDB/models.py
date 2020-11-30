@@ -45,7 +45,6 @@ class Partner(models.Model):
     def __str__(self):
         return self.client + " (Admin Id = " + str(admin_id) + ")"
 
-
 ###### VEHICLE MODELS ###############
 
 class Manufacturer(models.Model):
@@ -56,7 +55,8 @@ class Manufacturer(models.Model):
         return self.name + " (Home Country = " + str(self.home_country) + ")"
 
 
-# The primary key for this model is id. It is auto included and created by Django.
+
+# The primary key for this model is id. It is auto included and created by Django. 
 class Vehicle_Type(models.Model):
     model = models.CharField(max_length=100)
     manufacturer_name = models.ForeignKey(
@@ -84,7 +84,7 @@ class Vehicle_Instance(models.Model):
 class Spacecraft(models.Model):
     vehicle_type = models.ForeignKey(Vehicle_Type, on_delete=models.CASCADE)
     max_weight = models.IntegerField()
-    max_thrust = models.CharField(max_length=100)
+    max_thrust = models.IntegerField()
     fuel_type = models.CharField(max_length=100)
     def __str__(self):
         return self.vehicle_type + " (Fuel type = " + str(self.fuel_type) + ")"

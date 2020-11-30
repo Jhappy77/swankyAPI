@@ -56,21 +56,25 @@ class Vehicle_InstanceSerializer(serializers.ModelSerializer):
         fields = ("id", "serial_no", "type_id", "preview_image_paths")
 
 class SpacecraftSerializer(serializers.ModelSerializer):
+    vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Spacecraft
-        fields = ("vehicle_type", "max_weight", "max_thrust", "fuel_type")
+        fields = ("max_weight", "max_thrust", "fuel_type", "vehicle_type")
 
 class Land_VehicleSerializer(serializers.ModelSerializer):
+    vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Land_Vehicle
         fields = ("vehicle_type", "max_speed", "fuel_type", "horsepower")
 
 class WatercraftSerializer(serializers.ModelSerializer):
+    vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Watercraft
         fields = ("vehicle_type", "max_speed", "length", "capacity")
 
 class AircraftSerializer(serializers.ModelSerializer):
+    vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Aircraft
         fields = ("vehicle_type", "engine_count", "takeoff_speed", "seat_count")
