@@ -13,21 +13,21 @@ class Admin_User(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     admin_id = models.CharField(max_length=10, primary_key=True)
     def __str__(self):
-        return self.username + " Admin (" + str(self.admin_id) + ")"
+        return str(self.username) + " Admin (" + str(self.admin_id) + ")"
 
 
 class Client(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     ssn = models.CharField(max_length=10, primary_key=True)
     def __str__(self):
-        return self.username + " (SSN = " + str(self.ssn) + ")"
+        return str(self.username) + " (SSN = " + str(self.ssn) + ")"
 
 
 class Person(models.Model):
     ssn = models.ForeignKey(Client, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     def __str__(self):
-        return self.name + " (SSN = " + str(self.ssn) + ")"
+        return str(self.name) + " (SSN = " + str(self.ssn) + ")"
 
 
 class Renter(models.Model):
@@ -35,7 +35,7 @@ class Renter(models.Model):
     admin_manager = models.ForeignKey(
         Admin_User, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     def __str__(self):
-        return self.client + " (Admin Manager = " + str(self.admin_manager) + ")"
+        return str(self.client) + " (Admin Manager = " + str(self.admin_manager) + ")"
 
 
 class Partner(models.Model):
@@ -43,7 +43,7 @@ class Partner(models.Model):
     admin_id = models.ForeignKey(
         Admin_User, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     def __str__(self):
-        return self.client + " (Admin Id = " + str(admin_id) + ")"
+        return str(self.client) + " (Admin Id = " + str(self.admin_id) + ")"
 
 
 ###### VEHICLE MODELS ###############
@@ -53,7 +53,7 @@ class Manufacturer(models.Model):
     home_country = models.CharField(max_length=100)
     year_founded = models.IntegerField()
     def __str__(self):
-        return self.name + " (Home Country = " + str(self.home_country) + ")"
+        return str(self.name) + " (Home Country = " + str(self.home_country) + ")"
 
 
 # The primary key for this model is id. It is auto included and created by Django.
@@ -65,7 +65,7 @@ class Vehicle_Type(models.Model):
     default_img = models.URLField(
         max_length=200, null=True, blank=True, default=None)
     def __str__(self):
-        return self.model + " (Manufacturer = " + str(self.manufacturer_name) + ")"
+        return str(self.model) + " (Manufacturer = " + str(self.manufacturer_name) + ")"
 # The primary key for this model is id. (Auto-included by Django)
 
 
@@ -75,7 +75,7 @@ class Vehicle_Instance(models.Model):
     preview_image_url = models.URLField(
         max_length=120, null=True, blank=True, default=None)
     def __str__(self):
-        return self.type_id + " (Serial no = " + str(self.serial_no) + ")"
+        return str(self.type_id) + " (Serial no = " + str(self.serial_no) + ")"
         # This forces the combination of type and serial number to be unique
     class Meta:
         unique_together = (("serial_no", "type_id"),)
@@ -87,7 +87,7 @@ class Spacecraft(models.Model):
     max_thrust = models.CharField(max_length=100)
     fuel_type = models.CharField(max_length=100)
     def __str__(self):
-        return self.vehicle_type + " (Fuel type = " + str(self.fuel_type) + ")"
+        return str(self.vehicle_type) + " (Fuel type = " + str(self.fuel_type) + ")"
 
 
 class Land_Vehicle(models.Model):
@@ -96,7 +96,7 @@ class Land_Vehicle(models.Model):
     fuel_type = models.CharField(max_length=100)
     horsepower = models.IntegerField()
     def __str__(self):
-        return self.vehicle_type + " (Horsepower = " + str(self.horsepower) + ")"
+        return str(self.vehicle_type) + " (Horsepower = " + str(self.horsepower) + ")"
 
 
 class Watercraft(models.Model):
@@ -105,7 +105,7 @@ class Watercraft(models.Model):
     length = models.IntegerField()
     capacity = models.CharField(max_length=100)
     def __str__(self):
-        return self.vehicle_type + " (Capacity = " + str(self.capacity) + ")"
+        return str(self.vehicle_type) + " (Capacity = " + str(self.capacity) + ")"
 
 
 class Aircraft(models.Model):
@@ -114,7 +114,7 @@ class Aircraft(models.Model):
     takeoff_speed = models.IntegerField()
     seat_count = models.IntegerField()
     def __str__(self):
-        return self.vehicle_type + " (Seat Count = " + str(self.seat_count) + ")"
+        return str(self.vehicle_type) + " (Seat Count = " + str(self.seat_count) + ")"
 
 
 class Made_Spaceship_Parts(models.Model):
@@ -122,7 +122,7 @@ class Made_Spaceship_Parts(models.Model):
     spacecraft_id = models.ForeignKey(Spacecraft, on_delete=models.CASCADE)
     part_name = models.CharField(max_length=100)
     def __str__(self):
-        return self.part_name + " (Manufacturer = " + str(self.manufacturer) + ")"
+        return str(self.part_name) + " (Manufacturer = " + str(self.manufacturer) + ")"
 
 
 ########## RENTING INFO ###############
@@ -134,7 +134,7 @@ class Contract(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     def __str__(self):
-        return self.contract_no + " (Start Date = " + str(self.start_date) + ")" + " (End Date = " + str(self.end_date) + ")"
+        return str(self.contract_no) + " (Start Date = " + str(self.start_date) + ")" + " (End Date = " + str(self.end_date) + ")"
 
 
 class Rents_Out(models.Model):
@@ -142,7 +142,7 @@ class Rents_Out(models.Model):
     vehicle = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
     daily_rate = models.IntegerField()
     def __str__(self):
-        return self.partner + " (Vehicle = " + str(self.vehicle) + ")" + " (Daily Rate = " + str(self.daily_rate) + ")"
+        return str(self.partner) + " (Vehicle = " + str(self.vehicle) + ")" + " (Daily Rate = " + str(self.daily_rate) + ")"
 
 
 class Rents(models.Model):
@@ -150,13 +150,13 @@ class Rents(models.Model):
     contract_no = models.ForeignKey(Contract, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
     def __str__(self):
-        return self.renter + " (Contract no = " + str(self.contract_no) + ")" + " (Vehicle = " + str(self.vehicle) + ")"
+        return str(self.renter) + " (Contract no = " + str(self.contract_no) + ")" + " (Vehicle = " + str(self.vehicle) + ")"
 
 
 class License_Type(models.Model):
     type = models.CharField(max_length=10, primary_key=True)
     def __str__(self):
-        return self.type
+        return str(self.type)
 
 
 class License(models.Model):
@@ -164,4 +164,4 @@ class License(models.Model):
     license_id = models.CharField(primary_key=True, max_length=25)
     type = models.ForeignKey(License_Type, on_delete=models.CASCADE)
     def __str__(self):
-        return self.renter + " (License Id = " + str(self.license_id) + ")" + " (Type = " + str(self.type) + ")"
+        return str(self.renter) + " (License Id = " + str(self.license_id) + ")" + " (Type = " + str(self.type) + ")"

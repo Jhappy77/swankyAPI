@@ -6,7 +6,7 @@ urlpatterns = [
 
 
     ################### LICENSES ########################## 
-   
+    
     # For a renter to save a license associated with them
     path('save-license', views.saveLicense.as_view(), name='Save License'),
 
