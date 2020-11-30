@@ -16,11 +16,6 @@ urlpatterns = [
 
     # Get a license of type specified, if it exists
     # path('get-license-type', views.getLicense_Type.as_view(), name='Get License Type'),
-    
-    # # Check if a renter is allowed to rent a certain type of vehicle.
-    # # Passes a vehicleTypeId, and a renterId. 
-    # # Returns true if the renter is allowed, false if they aren't.
-    # path('can-rent', name='Can rent'),
 
     # #Returns all the licenses owned by the specified renter
     path('licenses', views.getLicenses.as_view(), name='licenses'),
@@ -56,25 +51,17 @@ urlpatterns = [
     # #Should return all vehicle types.
     # path('vehicle-types', name='Vehicle Types'),
 
-    # #Query the spacecraft instances. You should be able to filter by availabilities by date,
-    # #filter by minPrice and maxPrice, thrust, and manufacturers
-    # #use generics.ListAPIView
+    # Spacecraft types
     path('spacecrafts', views.getAvailableSpacecrafts.as_view(), name='Spacecrafts'),
 
-    # #Query the land vehicle instances. You should be able to filter by availabilities by date,
-    # #filter by minPrice and maxPrice, max_speed, and manufacturers
-    # #use generics.ListAPIView
+    # Land vehicle types
     path('land-vehicles', views.getLand_Vehicles.as_view(), name='Land Vehicles'),
 
-    # #Query the watercraft instances. You should be able to filter by availabilities by date,
-    # #filter by minPrice and maxPrice, max_speed, capacity and manufacturers
-    # #use generics.ListAPIView
+    # Watercraft types
     path('watercrafts', views.getWatercrafts.as_view(), name='Watercrafts'),
 
     
-    # #Query the watercraft instances. You should be able to filter by availabilities by date,
-    # #filter by minPrice and maxPrice, max_speed, capacity and manufacturers
-    # #use generics.ListAPIView
+    # Aircraft types
     path('aircrafts', views.getAircrafts.as_view(), name='Aircrafts'),
     
 ]
