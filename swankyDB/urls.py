@@ -1,4 +1,4 @@
-from swankyDB.views import deleteLicense, getAircrafts, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts, updateLicense
+from swankyDB.views import deleteLicense, getAircrafts, getAllLicenses, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts, updateLicense
 from django.urls import path 
 from . import views 
 from .login import login_view
@@ -18,6 +18,8 @@ urlpatterns = [
     
     # Returns all the licenses owned by the specified renter
     path('license', views.getLicenses.as_view(), name='licenses'),
+    # Returns all licenses
+    path('license/all', views.getAllLicenses.as_view(), name='All Licenses'),
     # For a renter to save a license associated with them
     path('license/create', views.saveLicense.as_view(), name='Save License'),
     #Updates a specified license with information
@@ -55,24 +57,7 @@ urlpatterns = [
     path('rents/create', views.saveRents.as_view(), name='Rent out a vehicle'),
     path('rents/<int:pk>', views.updateRents.as_view(), name='Update rent for a vehicle'),
     path('rents/<int:pk>/delete', views.deleteRents.as_view(), name='Delete vehicle renting'),
-
-
-
-    ## In the future, implement
-    # # For a partner registering a vehicle to rent.
-    # #Should pass a partner, a dailyRate ($), a vehicleTypeId, and a serialNumber (optional: preview image url)
-    # #Should create a tuple in the VehicleInstance table with the proper values, then a table
-    # #in the rents-out table that refers to the newly registered vehicle.
-    # #Pass an 200 Response if the request was okay and the tuples were created
-    # #Pass a 400 Response if they weren't created or request was bad
-    # path('register-rent', name='Register vehicle to rent out'),
     
-
-    # # Should pass a vehicleInstanceId and renter to saveRents
-    # # Should create a contract tuple
-    # # Should then make a RENTS tuple for the contract, renter, and vehicle
-    #path('rent-vehicle', views.saveRents.as_view(), name='Rent vehicle'),
-
 
 ################### VEHICLES ###########################
 

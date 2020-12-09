@@ -5,25 +5,44 @@ from .models import Client, Renter, Partner, Admin_User
 
 # If there is a renter object associated with this user
 class RenterPermission(permissions.BasePermission):
-
     def has_permission(self, request, view):
         client = Client.objects.filter(username=request.user.id)
         if not client.exists():
             return False
-        print(ClientSerializer(client))
         clientID = client[0].id
-        print(clientID)
         renter = Renter.objects.filter(client=clientID)
-        #renter = client.renters_set
-        print(RenterSerializer(renter))
         return renter.exists()
 
-
+# If a partner object is associated with this user
 class PartnerPermission(permissions.BasePermission):
-
     def has_permission(self, request, view):
-        return super().has_permission(request, view)
+        client = Client.objects.filter(username=request.user.id)
+        if not client.exists():
+            return False
+        clientID = client[0].id
+        partner = Partner.objects.filter(client=clientID)
+        return partner.exists()
 
+
+def getRenterID(request):
+    client = Client.objects.filter(username=request.user.id)
+    if not client.exists():
+        raise Exception('No client exists with that id')
+    clientID = client[0].id
+    renter = Renter.objects.filter(client=clientID)
+    if not renter.exists():
+        raise Exception('No client exists with that id')
+    return renter[0].id
+
+def getPartnerID(request):
+    client = Client.objects.filter(username=request.user.id)
+    if not client.exists():
+        raise Exception('No client exists with that id')
+    clientID = client[0].id
+    partner = Partner.objects.filter(client=clientID)
+    if not partner.exists():
+        raise Exception('No client exists with that id')
+    return partner[0].id
 
 
 # ░░█▀░░░░░░░░░░░▀▀███████░░░░ 

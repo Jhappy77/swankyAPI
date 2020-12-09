@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 # Our files
 from .models import *
@@ -65,7 +65,7 @@ from django.contrib.auth.decorators import login_required
 
 ## Licenses
 class saveLicense(generics.CreateAPIView):
-    queryset = License.objects.all()
+
     serializer_class = LicenseSerializer
 
 class deleteLicense(generics.DestroyAPIView):
@@ -77,32 +77,39 @@ class updateLicense(generics.RetrieveUpdateAPIView):
     serializer_class = LicenseSerializer
 
 class getLicenses(generics.ListAPIView):
+    permission_classes = [RenterPermission]
     serializer_class = LicenseSerializer
     def get_queryset(self):
-        myrenter = self.request.query_params.get('renter', None)
-        queryset = License.objects.all()
-        if myrenter is not None:
-            queryset = queryset.filter(renter=myrenter)
-        return queryset
+        licenses = License.objects.all()
+        try:
+            renterID = getRenterID(self.request)
+            return licenses.filter(renter=renterID)
+        except:
+            return License.objects.none()
 
+class getAllLicenses(generics.ListAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = LicenseSerializer
+    queryset = License.objects.all()
 
 
 ## License Types
 class saveLicenseType(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     queryset = License_Type.objects.all()
     serializer_class = License_TypeSerializer
 
 class getAllLicense_Types(generics.ListAPIView):
-    permission_classes=[RenterPermission]
     queryset = License_Type.objects.all()
     serializer_class = License_TypeSerializer
 
 class deleteLicenseType(generics.DestroyAPIView):
+    permission_classes = [IsAdminUser]
     queryset = License_Type.objects.all()
     serializer_class = License_TypeSerializer
 
 class updateLicenseType(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = License_Type.objects.all()
     serializer_class = License_TypeSerializer
 
@@ -113,6 +120,7 @@ class updateLicenseType(generics.RetrieveUpdateAPIView):
 ## Person
 
 class savePerson(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
 
