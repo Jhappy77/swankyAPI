@@ -51,7 +51,7 @@ class Manufacturer(models.Model):
     home_country = models.CharField(max_length=100)
     year_founded = models.IntegerField()
     def __str__(self):
-        return str(self.id) + str(self.name) + " (Home Country = " + str(self.home_country) + ")"
+        return str(self.name) + " (ID: "+ str(self.id) +  ")"
 
 
 
@@ -74,7 +74,7 @@ class Vehicle_Instance(models.Model):
     preview_image_url = models.URLField(
         max_length=120, null=True, blank=True, default=None)
     def __str__(self):
-        return str(self.id) +str(self.type_id) + " (Serial no = " + str(self.serial_no) + ")"
+        return "VInstID: " + str(self.id) + "(Vehicle type: " + str(self.type_id) +")"
         # This forces the combination of type and serial number to be unique
     class Meta:
         unique_together = (("serial_no", "type_id"),)
@@ -141,7 +141,7 @@ class Rents_Out(models.Model):
     vehicle = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
     daily_rate = models.IntegerField()
     def __str__(self):
-        return str(self.id) + str(self.partner) + " (Vehicle = " + str(self.vehicle) + ")" + " (Daily Rate = " + str(self.daily_rate) + ")"
+        return "RentsOutID: " + str(self.id) + "    PARTNER: " + str(self.partner) + "       (VEHICLE: " + str(self.vehicle) + ")"
 
 
 class Rents(models.Model):
@@ -149,7 +149,7 @@ class Rents(models.Model):
     contract_no = models.ForeignKey(Contract, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle_Instance, on_delete=models.CASCADE)
     def __str__(self):
-        return str(self.id) + str(self.renter) + " (Contract no = " + str(self.contract_no) + ")" + " (Vehicle = " + str(self.vehicle) + ")"
+        return "RentsID: " + str(self.id) + ", Renter = (" + str(self.renter) + ")" + " (Contract no = " + str(self.contract_no) + ")" + " (Vehicle = " + str(self.vehicle) + ")"
 
 
 ####### LICENSE MODELS ##########
