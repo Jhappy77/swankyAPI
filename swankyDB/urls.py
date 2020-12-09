@@ -1,7 +1,7 @@
 from swankyDB.views import deleteLicense, getAircrafts, getAllLicenses, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts, updateLicense
 from django.urls import path 
 from . import views 
-from .login import login_view
+from .login import login_view, signup_view
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
@@ -12,8 +12,10 @@ urlpatterns = [
     # path('generic/<int:pk>', UPDATE.as_view(), name='Update      '),
     # path('generic/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
 
-    path('login', login_view.as_view(), name='Login'),
+    ##### SIGN UP & LOGIN ##########
+    path('signup', signup_view.as_view(), name='Signup'),
     path('login-token', obtain_auth_token, name='API Token '),
+    
     ################### LICENSES ########################## 
     
     # Returns all the licenses owned by the specified renter

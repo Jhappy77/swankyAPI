@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
 # Rest framework imports
-from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
@@ -65,7 +64,7 @@ from django.contrib.auth.decorators import login_required
 
 ## Licenses
 class saveLicense(generics.CreateAPIView):
-
+    queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
 class deleteLicense(generics.DestroyAPIView):
@@ -364,7 +363,6 @@ class getAllVehicle_Instances(generics.ListAPIView):
 
 class getAvailableSpacecrafts(generics.ListAPIView):
     serializer_class = SpacecraftSerializer
-
     def get_queryset(self):
         queryset = filterVehicleQueries(self.request.query_params, Spacecraft)
         return queryset
