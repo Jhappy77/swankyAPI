@@ -94,6 +94,12 @@ class RentsSerializer(serializers.ModelSerializer):
         model = Rents
         fields = ("renter", "vehicle", "theContract")
 
+class RentsPostSerializer(serializers.ModelSerializer):
+    # theContract = ContractSerializer(many=False, read_only=True)
+    class Meta:
+        model = Rents
+        fields = ("renter", "vehicle", "contract_no")
+
 class Rents_OutSerializer(serializers.ModelSerializer):
     vehicle = Vehicle_InstanceSerializer("vehicle")
     class Meta:

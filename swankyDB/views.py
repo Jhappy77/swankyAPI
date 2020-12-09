@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.generics import CreateAPIView
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -202,7 +203,6 @@ class searchForPartner(APIView):
 
 ###################### RENTING ########################
 
-
 ## Contracts
 class saveContract(generics.CreateAPIView):
     queryset = Contract.objects.all()
@@ -220,6 +220,7 @@ class updateContract(generics.RetrieveUpdateAPIView):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
+
 class searchForContract(APIView):
     def get(self, request):
         if(request.method != 'GET'):
@@ -231,8 +232,6 @@ class searchForContract(APIView):
         if not contract_list.exists():
             return Response({'Error': 'No Contract with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
         return Response(PartnerSerializer(contract_list[0]).data)
-
-
 
 
 ## Rents
