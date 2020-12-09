@@ -389,11 +389,50 @@ class getWatercrafts(generics.ListAPIView):
 class getVehicleTypes(generics.ListAPIView):
     queryset = Vehicle_Type
     serializer_class = Vehicle_TypeSerializer
+class saveVehicleTypes(generics.CreateAPIView):
+    queryset = Vehicle_Type.objects.all()
+    serializer_class = Vehicle_TypeSerializer
 
+class deleteVehicleTypes(generics.DestroyAPIView):
+    queryset = Vehicle_Type.objects.all()
+    serializer_class = Vehicle_TypeSerializer
+
+class updateVehicleTypes(generics.RetrieveUpdateAPIView):
+    queryset = Vehicle_Type.objects.all()
+    serializer_class = Vehicle_TypeSerializer
 
 
 ## Manufacturers
+class getManufacturers(generics.ListAPIView):
+    queryset = Manufacturer
+    serializer_class = ManufacturerSerializer
+
+class saveManufacturers(generics.CreateAPIView):
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
+
+class deleteManufacturers(generics.DestroyAPIView):
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
+
+class updateManufacturers(generics.RetrieveUpdateAPIView):
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
 
 
 ## Made spaceship parts
+class getSpaceshipParts(generics.ListAPIView):
+    queryset = Made_Spaceship_Parts
+    serializer_class = Made_Spaceship_PartSerializer
 
+class saveSpaceshipParts(generics.CreateAPIView):
+    queryset = Made_Spaceship_Parts.objects.all()
+    serializer_class = Made_Spaceship_PartSerializer
+
+class deleteSpaceshipParts(generics.DestroyAPIView):
+    queryset = Made_Spaceship_Parts.objects.all()
+    serializer_class = Made_Spaceship_PartSerializer
+
+class updateSpaceshipParts(generics.RetrieveUpdateAPIView):
+    queryset = Made_Spaceship_Parts.objects.all()
+    serializer_class = Made_Spaceship_PartSerializer

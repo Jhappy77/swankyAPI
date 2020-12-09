@@ -94,13 +94,25 @@ urlpatterns = [
     path('aircrafts', views.getAircrafts.as_view(), name='Aircrafts'),
 
 
+    ## Vehicle types CRUD
+    
+    path('vehicle-type', views.getVehicleTypes.as_view(), name='License Types'),
+    path('vehicle-type/create', views.saveVehicleTypes.as_view(), name='Create License Types'),
+    path('vehicle-type/<int:pk>', views.updateVehicleTypes.as_view(), name='Update License Types'),
+    path('vehicle-type/<int:pk>/delete', views.deleteVehicleTypes.as_view(), name='Delete License Types'),
 
     ############## MANUFACTURING #################
 
-
     ## Manufacturers CRUD
+    path('manufacturer', views.getManufacturers.as_view(), name='Get Manufacturer'),
+    path('manufacturer/create', views.saveManufacturers.as_view(), name='Create Manufacturer'),
+    path('manufacturer/<int:pk>', views.updateManufacturers.as_view(), name='Update Manufacturer'),
+    path('manufacturer/<int:pk>/delete', views.deleteManufacturers.as_view(), name='Delete Manufacturer'),
 
+    ## Spaceship Part CRUD
+    path('spaceship-part', views.getSpaceshipParts.as_view(), name='Get Spaceship Parts'),
+    path('spaceship-part/create', views.saveSpaceshipParts.as_view(), name='Create Spaceship Part'),
+    path('spaceship-part/<int:pk>', views.updateSpaceshipParts.as_view(), name='Update Spaceship Part'),
 
-    ## Spaceship Part Maker CRUD
     
 ]

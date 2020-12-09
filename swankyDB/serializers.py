@@ -118,3 +118,9 @@ class License_TypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = License_Type
         fields = ("type",)
+
+## SPACESHIP PARTS ############
+class Made_Spaceship_PartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Made_Spaceship_Parts
+        fields = ("spacecraft_id", "manufacturer", "part_name")
