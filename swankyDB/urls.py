@@ -1,24 +1,39 @@
-from swankyDB.views import getAircrafts, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts
+from swankyDB.views import deleteLicense, getAircrafts, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts, updateLicense
 from django.urls import path 
 from . import views 
 
 urlpatterns = [
 
+    # path('generic', GET.as_view(), name='Get     '),
+    # path('generic/create', CREATE.as_view(), name='Create      '),
+    # path('generic/<int:pk>', UPDATE.as_view(), name='Update      '),
+    # path('generic/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
+
 
 
     ################### LICENSES ########################## 
     
+    # Returns all the licenses owned by the specified renter
+    path('license', views.getLicenses.as_view(), name='licenses'),
+
     # For a renter to save a license associated with them
-    path('save-license', views.saveLicense.as_view(), name='Save License'),
+    path('license/create', views.saveLicense.as_view(), name='Save License'),
+
+    #Updates a specified license with information
+    path('license/<int:pk>', views.updateLicense.as_view(), name='Update License'),
+
+    # Deletes a license
+    path('license/<int:pk>/delete', views.deleteLicense.as_view(), name='Delete License'),
+
+
+     # License Type CRUD
 
     # Get all license types. Can be used to create enums for registering licenses.
-    path('license-types', views.getAllLicense_Types.as_view(), name='License Types'),
+    path('license-type', views.getAllLicense_Types.as_view(), name='License Types'),
 
-    # Get a license of type specified, if it exists
-    # path('get-license-type', views.getLicense_Type.as_view(), name='Get License Type'),
-
-    # #Returns all the licenses owned by the specified renter
-    path('licenses', views.getLicenses.as_view(), name='licenses'),
+    path('license-type/create', views.saveLicenseType.as_view(), name='Create License Types'),
+    path('license-type/<str:type>', views.updateLicenseType.as_view(), name='Update License Types'),
+    path('license-type/<str:type>/delete', views.deleteLicenseType.as_view(), name='Delete License Types'),
 
 
     ############### RENTING #####################

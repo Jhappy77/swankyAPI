@@ -47,22 +47,15 @@ class saveLicense(generics.CreateAPIView):
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
-class getAllLicense_Types(generics.ListAPIView):
-    queryset = License_Type.objects.all()
-    serializer_class = License_TypeSerializer
+# Deletes a license
+class deleteLicense(generics.DestroyAPIView):
+    queryset = License.objects.all()
+    serializer_class = LicenseSerializer
 
-# class getLicense_Type(APIView):
-#     def get(self, request):
-#         if(request.method != 'GET'):
-#             return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-#         query_type = request.query_params.get('query_type', None)
-#         if ((query_type is None)):
-#             return Response({'Error': 'Query must include license type as query_type'}, status=status.HTTP_400_BAD_REQUEST)
-#         license_list = License_Type.objects.filter(type=query_type)
-#         if not license_list.exists():
-#             return Response({'Error': 'No License of requested type exists'}, status=status.HTTP_204_NO_CONTENT)
-#         return Response(Vehicle_InstanceSerializer(license_list[0]).data)
-
+#Update license
+class updateLicense(generics.RetrieveUpdateAPIView):
+    queryset = License.objects.all()
+    serializer_class = LicenseSerializer
 
 #TODO: In the future we may want to consider making this use self.request.user instead of query_params
 # Only if we decide to rework permissions
@@ -74,6 +67,26 @@ class getLicenses(generics.ListAPIView):
         if myrenter is not None:
             queryset = queryset.filter(renter=myrenter)
         return queryset
+
+
+
+
+## License Types
+class saveLicenseType(generics.CreateAPIView):
+    queryset = License_Type.objects.all()
+    serializer_class = LicenseSerializer
+
+class getAllLicense_Types(generics.ListAPIView):
+    queryset = License_Type.objects.all()
+    serializer_class = License_TypeSerializer
+
+class deleteLicenseType(generics.DestroyAPIView):
+    queryset = License_Type.objects.all()
+    serializer_class = License_TypeSerializer
+
+class updateLicenseType(generics.RetrieveUpdateAPIView):
+    queryset = License_Type.objects.all()
+    serializer_class = License_TypeSerializer
 
 
 ############### USERS ##################
