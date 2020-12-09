@@ -67,16 +67,27 @@ urlpatterns = [
 
     # Spacecraft types
     path('spacecrafts', views.getAvailableSpacecrafts.as_view(), name='Spacecrafts'),
+    path('spacecrafts/create', views.saveSpacecraft.as_view(), name='Create Spacecraft'),
+    path('spacecrafts/<int:pk>', views.updateSpacecraft.as_view(), name='Update Spacecraft'),
+    path('spacecrafts/<int:pk>/delete', views.deleteSpacecraft.as_view(), name='Delete Spacecraft'),
 
     # Land vehicle types
     path('land-vehicles', views.getLand_Vehicles.as_view(), name='Land Vehicles'),
+    path('land-vehicles/create', views.saveLand_Vehicle.as_view(), name='Create Land Vehicles'),
+    path('land-vehicles/<int:pk>', views.updateLand_Vehicle.as_view(), name='Update Land Vehicles'),
+    path('land-vehicles/<int:pk>/delete', views.deleteLand_Vehicle.as_view(), name='Delete Land Vehicles'),
 
     # Watercraft types
     path('watercrafts', views.getWatercrafts.as_view(), name='Watercrafts'),
-
+    path('watercrafts/create', views.saveWatercraft.as_view(), name='Create Watercraft'),
+    path('watercrafts/<int:pk>', views.updateWatercraft.as_view(), name='Update Watercraft'),
+    path('watercrafts/<int:pk>/delete', views.deleteWatercraft.as_view(), name='Delete Watercraft'),
     
     # Aircraft types
     path('aircrafts', views.getAircrafts.as_view(), name='Aircrafts'),
+    path('aircrafts/create', views.saveAircraft.as_view(), name='Create Aircraft'),
+    path('aircrafts/<int:pk>', views.updateAircraft.as_view(), name='Update Aircraft'),
+    path('aircrafts/<int:pk>/delete', views.deleteAircraft.as_view(), name='Delete Aircraft'),
 
 
     ## Vehicle types CRUD

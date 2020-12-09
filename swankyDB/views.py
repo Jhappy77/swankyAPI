@@ -368,7 +368,17 @@ class getAvailableSpacecrafts(generics.ListAPIView):
     def get_queryset(self):
         queryset = filterVehicleQueries(self.request.query_params, Spacecraft)
         return queryset
+class saveSpacecraft(generics.CreateAPIView):
+    queryset = Spacecraft.objects.all()
+    serializer_class = SpacecraftSerializer
 
+class deleteSpacecraft(generics.DestroyAPIView):
+    queryset = Spacecraft.objects.all()
+    serializer_class = SpacecraftSerializer
+
+class updateSpacecraft(generics.RetrieveUpdateAPIView):
+    queryset = Spacecraft.objects.all()
+    serializer_class = SpacecraftSerializer
 
 
 
@@ -380,7 +390,17 @@ class getLand_Vehicles(generics.ListAPIView):
     def get_queryset(self):
         queryset = filterVehicleQueries(self.request.query_params, Land_Vehicle)
         return queryset
+class saveLand_Vehicle(generics.CreateAPIView):
+    queryset = Land_Vehicle.objects.all()
+    serializer_class = Land_VehicleSerializer
 
+class deleteLand_Vehicle(generics.DestroyAPIView):
+    queryset = Land_Vehicle.objects.all()
+    serializer_class = Land_VehicleSerializer
+
+class updateLand_Vehicle(generics.RetrieveUpdateAPIView):
+    queryset = Land_Vehicle.objects.all()
+    serializer_class = Land_VehicleSerializer
 
 ## Aircrafts
 
@@ -389,7 +409,17 @@ class getAircrafts(generics.ListAPIView):
     def get_queryset(self):
         queryset = filterVehicleQueries(self.request.query_params, Aircraft)
         return queryset
+class saveAircraft(generics.CreateAPIView):
+    queryset = Aircraft.objects.all()
+    serializer_class = AircraftSerializer
 
+class deleteAircraft(generics.DestroyAPIView):
+    queryset = Aircraft.objects.all()
+    serializer_class = AircraftSerializer
+
+class updateAircraft(generics.RetrieveUpdateAPIView):
+    queryset = Aircraft.objects.all()
+    serializer_class = AircraftSerializer
 
 ## Watercrafts
 
@@ -399,7 +429,17 @@ class getWatercrafts(generics.ListAPIView):
     def get_queryset(self):
         queryset = filterVehicleQueries(self.request.query_params, Watercraft)
         return queryset
+class saveWatercraft(generics.CreateAPIView):
+    queryset = Watercraft.objects.all()
+    serializer_class = WatercraftSerializer
 
+class deleteWatercraft(generics.DestroyAPIView):
+    queryset = Watercraft.objects.all()
+    serializer_class = WatercraftSerializer
+
+class updateWatercraft(generics.RetrieveUpdateAPIView):
+    queryset = Watercraft.objects.all()
+    serializer_class = WatercraftSerializer
 
 ## Vehicle Types
 
@@ -421,7 +461,7 @@ class updateVehicleTypes(generics.RetrieveUpdateAPIView):
 
 ## Manufacturers
 class getManufacturers(generics.ListAPIView):
-    queryset = Manufacturer
+    queryset = Manufacturer.objects.all()
     serializer_class = ManufacturerSerializer
 
 class saveManufacturers(generics.CreateAPIView):
@@ -439,7 +479,7 @@ class updateManufacturers(generics.RetrieveUpdateAPIView):
 
 ## Made spaceship parts
 class getSpaceshipParts(generics.ListAPIView):
-    queryset = Made_Spaceship_Parts
+    queryset = Made_Spaceship_Parts.objects.all()
     serializer_class = Made_Spaceship_PartSerializer
 
 class saveSpaceshipParts(generics.CreateAPIView):
