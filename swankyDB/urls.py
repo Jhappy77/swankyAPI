@@ -13,8 +13,8 @@ urlpatterns = [
     # path('generic/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
 
 
-    ##### SIGN UP & LOGIN ##########
-    path('signup', signup_view.as_view(), name='Signup'),
+    ##### LOGIN ##########
+
     path('login-token', obtain_auth_token, name='API Token '),
 
     ########################### USERS ########################## 
