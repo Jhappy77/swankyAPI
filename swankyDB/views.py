@@ -1,14 +1,17 @@
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView
 
+# Rest framework imports
+from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
-
+# Our files
 from .models import *
 from .serializers import *
+from .permissions import *
 
     #        ____  __.---""---.__  ____
     #       /####\/              \/####\
@@ -60,24 +63,19 @@ from django.contrib.auth.decorators import login_required
 
 ######### LICENSES #############
 
-# Saves a licenses' information
-# (This is a template view so we don't have to do much work. More complex views will require more work)
+## Licenses
 class saveLicense(generics.CreateAPIView):
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
-# Deletes a license
 class deleteLicense(generics.DestroyAPIView):
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
-#Update license
 class updateLicense(generics.RetrieveUpdateAPIView):
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
-#TODO: In the future we may want to consider making this use self.request.user instead of query_params
-# Only if we decide to rework permissions
 class getLicenses(generics.ListAPIView):
     serializer_class = LicenseSerializer
     def get_queryset(self):
@@ -89,13 +87,14 @@ class getLicenses(generics.ListAPIView):
 
 
 
-
 ## License Types
 class saveLicenseType(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = License_Type.objects.all()
     serializer_class = License_TypeSerializer
 
 class getAllLicense_Types(generics.ListAPIView):
+    permission_classes=[RenterPermission]
     queryset = License_Type.objects.all()
     serializer_class = License_TypeSerializer
 
@@ -234,34 +233,37 @@ class searchForContract(APIView):
         return Response(PartnerSerializer(contract_list[0]).data)
 
 
+
+
 ## Rents
 
-#Returns the info for a "RENTS" object, including the contract associated with it. 
-#TODO: Add ability to filter these by user
-class getRentInfo(generics.CreateAPIView):
+class saveRents(generics.CreateAPIView):
     queryset = Rents.objects.all()
     serializer_class = RentsSerializer
 
+class deleteRents(generics.DestroyAPIView):
+    queryset = Rents.objects.all()
+    serializer_class = RentsSerializer
+
+class updateRents(generics.RetrieveUpdateAPIView):
+    queryset = Rents.objects.all()
+    serializer_class = RentsSerializer
+    
 # Vehicles that are in the RENTS table (Can filter by renter)
 class getRentedOutVehicles(generics.ListAPIView):
-
     serializer_class = RentsSerializer
     def get_queryset(self):
         queryset = Rents.objects.all().select_related('vehicle')
         #TODO: In the future, add filter by dates?
-
         # minPrice = self.request.query_params.get('minPrice', None)
         # if minPrice is not None:
         #     queryset = queryset.filter(daily_rate__gte=minPrice)
         # maxPrice = self.request.query_params.get('maxPrice', None)
         # if maxPrice is not None:
         #     queryset = queryset.filter(daily_rate__lte=maxPrice)
-
-
         renter = self.request.query_params.get('renter', None)
         if renter is not None:
             queryset = queryset.filter(renter=renter)
-
         return queryset
 
 class getAllRentedBy(APIView):
@@ -306,6 +308,13 @@ class getRentables(generics.ListAPIView):
 
         return queryset
 
+class deleteRentable(generics.DestroyAPIView):
+    queryset = Rents_Out.objects.all()
+    serializer_class = Rents_OutSerializer
+
+class updateRentable(generics.RetrieveUpdateAPIView):
+    queryset = Rents_Out.objects.all()
+    serializer_class = Rents_OutSerializer
 
 ######################### VEHICLES ##############################
 
