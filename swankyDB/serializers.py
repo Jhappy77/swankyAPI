@@ -49,34 +49,54 @@ class Vehicle_InstanceSerializer(serializers.ModelSerializer):
         model = Vehicle_Instance
         fields = ("id", "serial_no", "type_id", "preview_image_url")
 
+class SpacecraftSerializerNoNest(serializers.ModelSerializer):
+    class Meta:
+        model = Spacecraft
+        fields = ("id", "max_weight", "max_thrust", "fuel_type", "vehicle_type")
+
 class SpacecraftSerializer(serializers.ModelSerializer):
     vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Spacecraft
-        fields = ("max_weight", "max_thrust", "fuel_type", "vehicle_type")
+        fields = ("id", "max_weight", "max_thrust", "fuel_type", "vehicle_type")
+
+class Land_VehicleSerializerNoNest(serializers.ModelSerializer):
+    class Meta:
+        model = Land_Vehicle
+        fields = ("id", "vehicle_type", "max_speed", "fuel_type", "horsepower")
 
 class Land_VehicleSerializer(serializers.ModelSerializer):
     vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Land_Vehicle
-        fields = ("vehicle_type", "max_speed", "fuel_type", "horsepower")
+        fields = ("id", "vehicle_type", "max_speed", "fuel_type", "horsepower")
+
+class WatercraftSerializerNoNest(serializers.ModelSerializer):
+    class Meta:
+        model = Watercraft
+        fields = ("id", "vehicle_type", "max_speed", "length", "capacity")
 
 class WatercraftSerializer(serializers.ModelSerializer):
     vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Watercraft
-        fields = ("vehicle_type", "max_speed", "length", "capacity")
+        fields = ("id", "vehicle_type", "max_speed", "length", "capacity")
+
+class AircraftSerializerNoNest(serializers.ModelSerializer):
+    class Meta:
+        model = Aircraft
+        fields = ("id", "vehicle_type", "engine_count", "takeoff_speed", "seat_count")
 
 class AircraftSerializer(serializers.ModelSerializer):
     vehicle_type = Vehicle_TypeSerializer("vehicle_type")
     class Meta:
         model = Aircraft
-        fields = ("vehicle_type", "engine_count", "takeoff_speed", "seat_count")
+        fields = ("id", "vehicle_type", "engine_count", "takeoff_speed", "seat_count")
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manufacturer
-        fields = ("name", "home_country", "year_founded")
+        fields = ("id", "name", "home_country", "year_founded")
 
 
 
@@ -121,6 +141,7 @@ class License_TypeSerializer(serializers.ModelSerializer):
 
 ## SPACESHIP PARTS ############
 class Made_Spaceship_PartSerializer(serializers.ModelSerializer):
+    spacecraft_id = SpacecraftSerializer("spacecraft_id")
     class Meta:
         model = Made_Spaceship_Parts
         fields = ("spacecraft_id", "manufacturer", "part_name")
