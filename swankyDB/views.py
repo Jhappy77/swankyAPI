@@ -39,6 +39,24 @@ from django.contrib.auth.decorators import login_required
 #https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/
 
 
+# class saveContract(generics.CreateAPIView):
+#     queryset = Contract.objects.all()
+#     serializer_class = ContractSerializer
+
+# class getContract(generics.ListAPIView):
+#     queryset = Contract.objects.all()
+#     serializer_class = ContractSerializer
+
+# class deleteContract(generics.DestroyAPIView):
+#     queryset = Contract.objects.all()
+#     serializer_class = ContractSerializer
+
+# class updateContract(generics.RetrieveUpdateAPIView):
+#     queryset = Contract.objects.all()
+#     serializer_class = ContractSerializer
+
+
+
 ######### LICENSES #############
 
 # Saves a licenses' information
@@ -91,6 +109,9 @@ class updateLicenseType(generics.RetrieveUpdateAPIView):
 
 ############### USERS ##################
 
+
+## Person
+
 class savePerson(generics.CreateAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
@@ -110,6 +131,9 @@ class searchForPerson(APIView):
             results.append(PersonSerializer(x).data)
         return Response(results)
 
+
+
+## Client
 
 class saveClient(generics.CreateAPIView):
     queryset = Client.objects.all()
@@ -131,6 +155,9 @@ class searchForClient(APIView):
         return Response(results)
 
 
+
+## Renter
+
 class saveRenter(generics.CreateAPIView):
     queryset = Renter.objects.all()
     serializer_class = RenterSerializer
@@ -150,6 +177,8 @@ class searchForRenter(APIView):
             results.append(RenterSerializer(x).data)
         return Response(results)
 
+
+## Partner
 
 class savePartner(generics.CreateAPIView):
     queryset = Partner.objects.all()
@@ -171,15 +200,25 @@ class searchForPartner(APIView):
         return Response(results)
 
 
-
 ###################### RENTING ########################
 
 
-#Returns the info for a "RENTS" object, including the contract associated with it. 
-#TODO: Add ability to filter these by user
-class getRentInfo(generics.CreateAPIView):
-    queryset = Rents.objects.all()
-    serializer_class = RentsSerializer
+## Contracts
+class saveContract(generics.CreateAPIView):
+    queryset = Contract.objects.all()
+    serializer_class = ContractSerializer
+
+class getContract(generics.ListAPIView):
+    queryset = Contract.objects.all()
+    serializer_class = ContractSerializer
+
+class deleteContract(generics.DestroyAPIView):
+    queryset = Contract.objects.all()
+    serializer_class = ContractSerializer
+
+class updateContract(generics.RetrieveUpdateAPIView):
+    queryset = Contract.objects.all()
+    serializer_class = ContractSerializer
 
 class searchForContract(APIView):
     def get(self, request):
@@ -194,11 +233,56 @@ class searchForContract(APIView):
         return Response(PartnerSerializer(contract_list[0]).data)
 
 
-"""
-executive decision to not make a view for manufacturer
-deal with it, chump 
-        (⌐■_■)
-"""
+
+
+## Rents
+
+#Returns the info for a "RENTS" object, including the contract associated with it. 
+#TODO: Add ability to filter these by user
+class getRentInfo(generics.CreateAPIView):
+    queryset = Rents.objects.all()
+    serializer_class = RentsSerializer
+
+# Vehicles that are in the RENTS table (Can filter by renter)
+class getRentedOutVehicles(generics.ListAPIView):
+
+    serializer_class = RentsSerializer
+    def get_queryset(self):
+        queryset = Rents.objects.all().select_related('vehicle')
+        #TODO: In the future, add filter by dates?
+
+        # minPrice = self.request.query_params.get('minPrice', None)
+        # if minPrice is not None:
+        #     queryset = queryset.filter(daily_rate__gte=minPrice)
+        # maxPrice = self.request.query_params.get('maxPrice', None)
+        # if maxPrice is not None:
+        #     queryset = queryset.filter(daily_rate__lte=maxPrice)
+
+
+        renter = self.request.query_params.get('renter', None)
+        if renter is not None:
+            queryset = queryset.filter(renter=renter)
+
+        return queryset
+
+class getAllRentedBy(APIView):
+    def get(self, request):
+        if(request.method != 'GET'):
+            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
+        query_name = request.query_params.get('query_name', None)
+        if ((query_name is None)):
+            return Response({'Error': 'Query must include name as query_name'}, status=status.HTTP_400_BAD_REQUEST)
+        rents_list = Rents.objects.filter(username=query_name)
+        if not rents_list.exists():
+            return Response({'Error': 'None rented by requested query_name exists'}, status=status.HTTP_204_NO_CONTENT)
+        results = []
+        for x in rents_list:
+            results.append(RentsSerializer(x).data)
+        return Response(results)
+
+
+
+### Rents_Out (RENTABLES)
 
 class saveRentOut(generics.CreateAPIView):
     queryset = Rents_Out.objects.all
@@ -223,50 +307,21 @@ class getRentables(generics.ListAPIView):
 
         return queryset
 
-# Vehicles that are in the RENTS table (Can filter by renter)
-class getRentedOutVehicles(generics.ListAPIView):
-
-    serializer_class = RentsSerializer
-    def get_queryset(self):
-        queryset = Rents.objects.all().select_related('vehicle')
-        #TODO: In the future, add filter by dates?
-
-        # minPrice = self.request.query_params.get('minPrice', None)
-        # if minPrice is not None:
-        #     queryset = queryset.filter(daily_rate__gte=minPrice)
-        # maxPrice = self.request.query_params.get('maxPrice', None)
-        # if maxPrice is not None:
-        #     queryset = queryset.filter(daily_rate__lte=maxPrice)
-
-
-        renter = self.request.query_params.get('renter', None)
-        if renter is not None:
-            queryset = queryset.filter(renter=renter)
-
-        return queryset
-
-class getAllVehicle_Instances(generics.ListAPIView):
-    queryset = Vehicle_Instance.objects.all()
-    serializer_class = Vehicle_InstanceSerializer
-
-
-class getAllRentedBy(APIView):
-    def get(self, request):
-        if(request.method != 'GET'):
-            return Response({'Error': 'Method not GET'}, status=status.HTTP_400_BAD_REQUEST)
-        query_name = request.query_params.get('query_name', None)
-        if ((query_name is None)):
-            return Response({'Error': 'Query must include name as query_name'}, status=status.HTTP_400_BAD_REQUEST)
-        rents_list = Rents.objects.filter(username=query_name)
-        if not rents_list.exists():
-            return Response({'Error': 'None rented by requested query_name exists'}, status=status.HTTP_204_NO_CONTENT)
-        results = []
-        for x in rents_list:
-            results.append(RentsSerializer(x).data)
-        return Response(results)
-
 
 ######################### VEHICLES ##############################
+
+## Helper functions
+def filterVehicleQueries(query_params, queryset):
+        thequeryset = queryset.objects.all().select_related("vehicle_type")
+        manufacturer = query_params.get('manufacturer', None)
+        if manufacturer is not None:
+            thequeryset = thequeryset.filter(vehicle_type__manufacturer_name=manufacturer)
+        return thequeryset
+
+
+
+
+## Vehicle Instances
 
 class getVehicle_Instance(APIView):
     def get(self, request):
@@ -280,35 +335,38 @@ class getVehicle_Instance(APIView):
             return Response({'Error': 'No Contract with requested id exists'}, status=status.HTTP_204_NO_CONTENT)
         return Response(Vehicle_InstanceSerializer(vehicle_list[0]).data)
 
+class getAllVehicle_Instances(generics.ListAPIView):
+    queryset = Vehicle_Instance.objects.all()
+    serializer_class = Vehicle_InstanceSerializer
+
+
+
+
+
+
+## Spacecrafts
 
 class getAvailableSpacecrafts(generics.ListAPIView):
     serializer_class = SpacecraftSerializer
 
     def get_queryset(self):
-
-        queryset = Spacecraft.objects.all().select_related("vehicle_type")
-        manufacturer = self.request.query_params.get('manufacturer', None)
-        if manufacturer is not None:
-            queryset = queryset.filter(vehicle_type__manufacturer_name=manufacturer)
-        
-        
+        queryset = filterVehicleQueries(self.request.query_params, Spacecraft)
         return queryset
 
-def filterVehicleQueries(query_params, queryset):
-        thequeryset = queryset.objects.all().select_related("vehicle_type")
-        manufacturer = query_params.get('manufacturer', None)
-        if manufacturer is not None:
-            thequeryset = thequeryset.filter(vehicle_type__manufacturer_name=manufacturer)
-        return thequeryset
 
+
+
+
+## Land Vehicles
 
 class getLand_Vehicles(generics.ListAPIView):
     serializer_class = Land_VehicleSerializer
     def get_queryset(self):
         queryset = filterVehicleQueries(self.request.query_params, Land_Vehicle)
-        
-        
         return queryset
+
+
+## Aircrafts
 
 class getAircrafts(generics.ListAPIView):
     serializer_class = AircraftSerializer
@@ -317,6 +375,8 @@ class getAircrafts(generics.ListAPIView):
         return queryset
 
 
+## Watercrafts
+
 class getWatercrafts(generics.ListAPIView):
     queryset = Watercraft
     serializer_class = WatercraftSerializer
@@ -324,6 +384,17 @@ class getWatercrafts(generics.ListAPIView):
         queryset = filterVehicleQueries(self.request.query_params, Watercraft)
         return queryset
 
+
+## Vehicle Types
+
 class getVehicleTypes(generics.ListAPIView):
     queryset = Vehicle_Type
     serializer_class = Vehicle_TypeSerializer
+
+
+
+## Manufacturers
+
+
+## Made spaceship parts
+

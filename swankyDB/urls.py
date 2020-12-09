@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
 
+    # Generic CRUD URL routes
     # path('generic', GET.as_view(), name='Get     '),
     # path('generic/create', CREATE.as_view(), name='Create      '),
     # path('generic/<int:pk>', UPDATE.as_view(), name='Update      '),
@@ -15,16 +16,12 @@ urlpatterns = [
     
     # Returns all the licenses owned by the specified renter
     path('license', views.getLicenses.as_view(), name='licenses'),
-
     # For a renter to save a license associated with them
     path('license/create', views.saveLicense.as_view(), name='Save License'),
-
     #Updates a specified license with information
     path('license/<int:pk>', views.updateLicense.as_view(), name='Update License'),
-
     # Deletes a license
     path('license/<int:pk>/delete', views.deleteLicense.as_view(), name='Delete License'),
-
 
      # License Type CRUD
 
@@ -38,8 +35,23 @@ urlpatterns = [
 
     ############### RENTING #####################
     
+    ## Contract CRUD
+    path('contract', views.getContract.as_view(), name='Get Contract'),
+    path('contract/create', views.saveContract.as_view(), name='Create Contract'),
+    path('contract/<str:pk>', views.updateContract.as_view(), name='Update Contract'),
+    path('contract/<str:pk>/delete', views.deleteContract.as_view(), name='Delete Contract'),
+
+
+
+
 
     path('rentables', views.getRentables.as_view(), name='Vehicles that are being rented out by partners'),
+
+    # path('rentables', GET.as_view(), name='Get     '),
+    # path('rentables/create', CREATE.as_view(), name='Create      '),
+    # path('rentables/<int:pk>', UPDATE.as_view(), name='Update      '),
+    # path('rentables/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
+
 
 
     path('rents', views.getRentedOutVehicles.as_view(), name="Vehicles being rented by a renter"),
@@ -78,5 +90,15 @@ urlpatterns = [
     
     # Aircraft types
     path('aircrafts', views.getAircrafts.as_view(), name='Aircrafts'),
+
+
+
+    ############## MANUFACTURING #################
+
+
+    ## Manufacturers CRUD
+
+
+    ## Spaceship Part Maker CRUD
     
 ]
