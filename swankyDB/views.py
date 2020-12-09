@@ -74,7 +74,7 @@ class getLicenses(generics.ListAPIView):
 ## License Types
 class saveLicenseType(generics.CreateAPIView):
     queryset = License_Type.objects.all()
-    serializer_class = LicenseSerializer
+    serializer_class = License_TypeSerializer
 
 class getAllLicense_Types(generics.ListAPIView):
     queryset = License_Type.objects.all()

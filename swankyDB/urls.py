@@ -32,8 +32,8 @@ urlpatterns = [
     path('license-type', views.getAllLicense_Types.as_view(), name='License Types'),
 
     path('license-type/create', views.saveLicenseType.as_view(), name='Create License Types'),
-    path('license-type/<str:type>', views.updateLicenseType.as_view(), name='Update License Types'),
-    path('license-type/<str:type>/delete', views.deleteLicenseType.as_view(), name='Delete License Types'),
+    path('license-type/<str:pk>', views.updateLicenseType.as_view(), name='Update License Types'),
+    path('license-type/<str:pk>/delete', views.deleteLicenseType.as_view(), name='Delete License Types'),
 
 
     ############### RENTING #####################
