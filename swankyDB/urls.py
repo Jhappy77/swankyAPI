@@ -1,30 +1,57 @@
-from swankyDB.views import getAircrafts, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts
+from swankyDB.views import deleteLicense, getAircrafts, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts, updateLicense
 from django.urls import path 
 from . import views 
 
 urlpatterns = [
 
+    # Generic CRUD URL routes
+    # path('generic', GET.as_view(), name='Get     '),
+    # path('generic/create', CREATE.as_view(), name='Create      '),
+    # path('generic/<int:pk>', UPDATE.as_view(), name='Update      '),
+    # path('generic/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
+
 
 
     ################### LICENSES ########################## 
     
+    # Returns all the licenses owned by the specified renter
+    path('license', views.getLicenses.as_view(), name='licenses'),
     # For a renter to save a license associated with them
-    path('save-license', views.saveLicense.as_view(), name='Save License'),
+    path('license/create', views.saveLicense.as_view(), name='Save License'),
+    #Updates a specified license with information
+    path('license/<int:pk>', views.updateLicense.as_view(), name='Update License'),
+    # Deletes a license
+    path('license/<int:pk>/delete', views.deleteLicense.as_view(), name='Delete License'),
+
+     # License Type CRUD
 
     # Get all license types. Can be used to create enums for registering licenses.
-    path('license-types', views.getAllLicense_Types.as_view(), name='License Types'),
+    path('license-type', views.getAllLicense_Types.as_view(), name='License Types'),
 
-    # Get a license of type specified, if it exists
-    # path('get-license-type', views.getLicense_Type.as_view(), name='Get License Type'),
-
-    # #Returns all the licenses owned by the specified renter
-    path('licenses', views.getLicenses.as_view(), name='licenses'),
+    path('license-type/create', views.saveLicenseType.as_view(), name='Create License Types'),
+    path('license-type/<str:pk>', views.updateLicenseType.as_view(), name='Update License Types'),
+    path('license-type/<str:pk>/delete', views.deleteLicenseType.as_view(), name='Delete License Types'),
 
 
     ############### RENTING #####################
     
+    ## Contract CRUD
+    path('contract', views.getContract.as_view(), name='Get Contract'),
+    path('contract/create', views.saveContract.as_view(), name='Create Contract'),
+    path('contract/<str:pk>', views.updateContract.as_view(), name='Update Contract'),
+    path('contract/<str:pk>/delete', views.deleteContract.as_view(), name='Delete Contract'),
+
+
+
+
 
     path('rentables', views.getRentables.as_view(), name='Vehicles that are being rented out by partners'),
+
+    # path('rentables', GET.as_view(), name='Get     '),
+    # path('rentables/create', CREATE.as_view(), name='Create      '),
+    # path('rentables/<int:pk>', UPDATE.as_view(), name='Update      '),
+    # path('rentables/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
+
 
 
     path('rents', views.getRentedOutVehicles.as_view(), name="Vehicles being rented by a renter"),
@@ -65,5 +92,15 @@ urlpatterns = [
     
     # Aircraft types
     path('aircrafts', views.getAircrafts.as_view(), name='Aircrafts'),
+
+
+
+    ############## MANUFACTURING #################
+
+
+    ## Manufacturers CRUD
+
+
+    ## Spaceship Part Maker CRUD
     
 ]

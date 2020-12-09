@@ -2,12 +2,6 @@ from rest_framework import serializers
 from .models import *
 from django.contrib.auth.models import User 
 
-####### These serializers are not finalized!!! ############
-# They're just a starting point. Some of them need the fields updated,
-# because I made a few changes to the model.
-# They all need to be constructed with model serializer, like license serialzier (Elgiz forgot to)
-# Finally, you may need to make more complex serializers for specific situations.
-
 
 ################ USERS ##############
 
@@ -19,7 +13,7 @@ class PersonSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ("ssn", "username")
+        fields = ("person", "username")
 
 class RenterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -94,16 +88,6 @@ class ContractSerializer(serializers.ModelSerializer):
         model = Contract
         fields = ("contract_no", "money", "start_date", "end_date")
 
-class LicenseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = License
-        fields = ("license_id", "type", "renter")
-
-class License_TypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = License_Type
-        fields = ("type",)
-
 class RentsSerializer(serializers.ModelSerializer):
     theContract = ContractSerializer(many=False, read_only=True)
     class Meta:
@@ -121,3 +105,16 @@ class Rents_OutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rents_Out
         fields = ("partner", "vehicle", "daily_rate")
+
+
+## LICENSE INFO ###############
+
+class LicenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = License
+        fields = ("license_id", "type", "renter")
+
+class License_TypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = License_Type
+        fields = ("type",)
