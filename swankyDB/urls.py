@@ -12,6 +12,16 @@ urlpatterns = [
     # path('generic/<int:pk>', UPDATE.as_view(), name='Update      '),
     # path('generic/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
 
+    ########################### USERS ########################## 
+    
+    # Returns all the clients
+    path('clients', views.getAllClients.as_view(), name='Get a list of all the clients'),
+    # Returns all the renters
+    path('renters', views.getAllRenters.as_view(), name='Get a list of all the renters'),
+    # Returns all the partners
+    path('partners', views.getAllPartners.as_view(), name='Get a list of all the partners'),
+
+
     path('login', login_view.as_view(), name='Login'),
     path('login-token', obtain_auth_token, name='API Token '),
     ################### LICENSES ########################## 

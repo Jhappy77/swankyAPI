@@ -147,6 +147,11 @@ class saveClient(generics.CreateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
+class getAllClients(generics.ListAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
 class searchForClient(APIView):
     def get(self, request):
         if(request.method != 'GET'):
@@ -170,6 +175,11 @@ class saveRenter(generics.CreateAPIView):
     queryset = Renter.objects.all()
     serializer_class = RenterSerializer
 
+class getAllRenters(generics.ListAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = Renter.objects.all()
+    serializer_class = RenterSerializer
+
 class searchForRenter(APIView):
     def get(self, request):
         if(request.method != 'GET'):
@@ -189,6 +199,11 @@ class searchForRenter(APIView):
 ## Partner
 
 class savePartner(generics.CreateAPIView):
+    queryset = Partner.objects.all()
+    serializer_class = PartnerSerializer
+
+class getAllPartners(generics.ListAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Partner.objects.all()
     serializer_class = PartnerSerializer
 
