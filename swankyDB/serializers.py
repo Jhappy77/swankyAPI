@@ -13,7 +13,7 @@ class PersonSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ("person", "username")
+        fields = ("username", "person")
 
 class RenterSerializer(serializers.ModelSerializer):
     class Meta:
