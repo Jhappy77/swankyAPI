@@ -65,7 +65,8 @@ from django.contrib.auth.decorators import login_required
 
 ## Licenses
 class saveLicense(generics.CreateAPIView):
-
+    permission_classes = [IsAdminUser]
+    queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
 class deleteLicense(generics.DestroyAPIView):
