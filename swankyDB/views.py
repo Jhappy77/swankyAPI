@@ -228,22 +228,22 @@ class searchForPartner(APIView):
 
 ## Contracts
 class saveContract(generics.CreateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser|PartnerPermission|RenterPermission]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
 class getContract(generics.ListAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser|PartnerPermission|RenterPermission]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
 class deleteContract(generics.DestroyAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser|PartnerPermission|RenterPermission]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
 class updateContract(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser|PartnerPermission|RenterPermission]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
