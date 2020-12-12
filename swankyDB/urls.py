@@ -1,4 +1,4 @@
-from swankyDB.views import deleteLicense, getAircrafts, getAllLicenses, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getRentedOutVehicles, getWatercrafts, updateLicense
+from swankyDB.views import deleteLicense, getAircrafts, getAllLicenses, getAvailableSpacecrafts, getLand_Vehicles, getLicenses, getMyRents, getRentedOutVehicles, getWatercrafts, updateLicense
 from django.urls import path 
 from . import views 
 from .login import login_view, signup_view
@@ -6,16 +6,10 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
 
-    # Generic CRUD URL routes
-    # path('generic', GET.as_view(), name='Get     '),
-    # path('generic/create', CREATE.as_view(), name='Create      '),
-    # path('generic/<int:pk>', UPDATE.as_view(), name='Update      '),
-    # path('generic/<int:pk>/delete', DESTROY.as_view(), name='Delete    '),
-
-
     ##### LOGIN ##########
 
-    path('login-token', obtain_auth_token, name='API Token '),
+    path('login-token', obtain_auth_token, name='API Token'),
+    path('signup', signup_view.as_view(), name='Sign up'),
 
     ########################### USERS ########################## 
     
@@ -25,7 +19,7 @@ urlpatterns = [
     path('renters', views.getAllRenters.as_view(), name='Get a list of all the renters'),
     # Returns all the partners
     path('partners', views.getAllPartners.as_view(), name='Get a list of all the partners'),
-
+    #For our system, clients renters and partners should not be updated or deleted throught the API, but directly from the admin website.
 
     
     ################### LICENSES ########################## 
@@ -71,7 +65,8 @@ urlpatterns = [
     path('rents/create', views.saveRents.as_view(), name='Rent out a vehicle'),
     path('rents/<int:pk>', views.updateRents.as_view(), name='Update rent for a vehicle'),
     path('rents/<int:pk>/delete', views.deleteRents.as_view(), name='Delete vehicle renting'),
-    
+    # The vehicles you are renting out
+    path('rents/mine', views.getMyRents.as_view(), name='Renters set of rents'),
 
 ################### VEHICLES ###########################
 
@@ -105,11 +100,18 @@ urlpatterns = [
 
 
     ## Vehicle types CRUD
-    
     path('vehicle-type', views.getVehicleTypes.as_view(), name='License Types'),
-    path('vehicle-type/create', views.saveVehicleTypes.as_view(), name='Create License Types'),
-    path('vehicle-type/<int:pk>', views.updateVehicleTypes.as_view(), name='Update License Types'),
-    path('vehicle-type/<int:pk>/delete', views.deleteVehicleTypes.as_view(), name='Delete License Types'),
+    path('vehicle-type/create', views.saveVehicleTypes.as_view(), name='Create Vehicle Types'),
+    path('vehicle-type/<int:pk>', views.updateVehicleTypes.as_view(), name='Update Vehicle Types'),
+    path('vehicle-type/<int:pk>/delete', views.deleteVehicleTypes.as_view(), name='Delete Vehicle Types'),
+
+
+    ## Vehicle Instance CRUD
+    path('vehicle-instance', views.getAllVehicle_Instances.as_view(), name='Vehicle Instances'),
+    path('vehicle-instance/create', views.saveVehicleInstance.as_view(), name='Create vehicle instance'),
+    path('vehicle-instance/<int:pk>', views.updateVehicleInstance.as_view(), name='Update Vehicle instance'),
+    path('vehicle-instance/<int:pk>/delete', views.deleteVehicleInstance.as_view(), name='Delete Vehicle Instance'),
+
 
     ############## MANUFACTURING #################
 
@@ -126,3 +128,5 @@ urlpatterns = [
     path('spaceship-part/<int:pk>/delete', views.deleteSpaceshipParts.as_view(), name='Delete Spaceship Part'),
     
 ]
+
+

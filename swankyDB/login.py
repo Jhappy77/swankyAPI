@@ -1,4 +1,4 @@
-from swankyDB.serializers import UserSerializer
+from swankyDB.serializers import UserSerializer, RegisterSerializer
 from django.contrib.auth import login, authenticate
 from rest_framework.response import Response
 from rest_framework import status
@@ -17,6 +17,13 @@ class login_view(APIView):
         else:
             return Response({"error": "Could not validate your login information"}, status=status.HTTP_401_UNAUTHORIZED)
 
-class signup_view(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class signup_view(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+    def post(self, request, *args,  **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": UserSerializer(user,    context=self.get_serializer_context()).data,
+            "message": "User signed in, access the login-token route to get your token",
+        })
