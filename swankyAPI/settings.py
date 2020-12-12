@@ -34,28 +34,24 @@ ALLOWED_HOSTS = []
 # COMMENT/UNCOMMENT THIS TO DISABLE/ENABLE SQL LOGGING WHEN:
 # 1) DEBUG = True
 # 2) python manage.py runserver
-LOGGING_CONFIG = None
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'django_all': {
-            'class': 'logging.FileHandler',
-            'filename': '/home/daniel/Documents/swankyAPI/log/debug.log',   #!IMPORTANT! Change this to where you want your log to appear
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
-import logging.config
-logging.config.dictConfig(LOGGING)
+# LOGGING_CONFIG = None
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     },
+# }
+# import logging.config
+# logging.config.dictConfig(LOGGING)
 #END OF SQL LOGGING CODE
 
 # Application definition
