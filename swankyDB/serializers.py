@@ -121,7 +121,7 @@ class RentsPostSerializer(serializers.ModelSerializer):
         fields = ("renter", "vehicle", "contract_no")
 
 class Rents_OutSerializer(serializers.ModelSerializer):
-    vehicle = Vehicle_InstanceSerializer("vehicle")
+    # vehicle = Vehicle_InstanceSerializer("vehicle")
     class Meta:
         model = Rents_Out
         fields = ("partner", "vehicle", "daily_rate")

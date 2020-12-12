@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 
 # START OF SQL LOGGING CODE
 # COMMENT/UNCOMMENT THIS TO DISABLE/ENABLE SQL LOGGING WHEN:
-# - DEBUG = True
-# - python manage.py runserver
+# 1) DEBUG = True
+# 2) python manage.py runserver
 LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
