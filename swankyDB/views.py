@@ -486,14 +486,17 @@ class getVehicleTypes(generics.ListAPIView):
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 class saveVehicleTypes(generics.CreateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 
 class deleteVehicleTypes(generics.DestroyAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 
 class updateVehicleTypes(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 
@@ -518,7 +521,6 @@ class updateManufacturers(generics.RetrieveUpdateAPIView):
 
 ## Made spaceship parts
 class getSpaceshipParts(generics.ListAPIView):
-    permission_classes = [PartnerPermission]
     queryset = Made_Spaceship_Parts.objects.all()
     serializer_class = Made_Spaceship_PartSerializer
 

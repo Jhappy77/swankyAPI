@@ -141,7 +141,7 @@ class License_TypeSerializer(serializers.ModelSerializer):
 
 ## SPACESHIP PARTS ############
 class Made_Spaceship_PartSerializer(serializers.ModelSerializer):
-    spacecraft_id = SpacecraftSerializer("spacecraft_id")
+    spacecraft_id = SpacecraftSerializer("spacecraft_id", read_only=True)
     class Meta:
         model = Made_Spaceship_Parts
         fields = ("spacecraft_id", "manufacturer", "part_name")

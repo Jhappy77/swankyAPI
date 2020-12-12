@@ -119,6 +119,6 @@ urlpatterns = [
     path('spaceship-part', views.getSpaceshipParts.as_view(), name='Get Spaceship Parts'),
     path('spaceship-part/create', views.saveSpaceshipParts.as_view(), name='Create Spaceship Part'),
     path('spaceship-part/<int:pk>', views.updateSpaceshipParts.as_view(), name='Update Spaceship Part'),
-
+    path('spaceship-part/<int:pk>/delete', views.deleteSpaceshipParts.as_view(), name='Delete Spaceship Part'),
     
 ]
