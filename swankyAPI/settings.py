@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import django_heroku
+import logging
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +30,33 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# START OF SQL LOGGING CODE
+# COMMENT/UNCOMMENT THIS TO DISABLE/ENABLE SQL LOGGING WHEN:
+# 1) DEBUG = True
+# 2) python manage.py runserver
+LOGGING_CONFIG = None
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'django_all': {
+            'class': 'logging.FileHandler',
+            'filename': '/home/daniel/Documents/swankyAPI/log/debug.log',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+import logging.config
+logging.config.dictConfig(LOGGING)
+#END OF SQL LOGGING CODE
 
 # Application definition
 

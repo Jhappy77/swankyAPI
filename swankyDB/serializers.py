@@ -17,7 +17,7 @@ class PersonSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ("person", "username")
+        fields = ("username", "person")
 
 class RenterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -125,7 +125,7 @@ class RentsPostSerializer(serializers.ModelSerializer):
         fields = ("renter", "vehicle", "contract_no")
 
 class Rents_OutSerializer(serializers.ModelSerializer):
-    vehicle = Vehicle_InstanceSerializer("vehicle")
+    # vehicle = Vehicle_InstanceSerializer("vehicle")
     class Meta:
         model = Rents_Out
         fields = ("partner", "vehicle", "daily_rate")
@@ -145,7 +145,7 @@ class License_TypeSerializer(serializers.ModelSerializer):
 
 ## SPACESHIP PARTS ############
 class Made_Spaceship_PartSerializer(serializers.ModelSerializer):
-    spacecraft_id = SpacecraftSerializer("spacecraft_id")
+    spacecraft_id = SpacecraftSerializer("spacecraft_id", read_only=True)
     class Meta:
         model = Made_Spaceship_Parts
         fields = ("spacecraft_id", "manufacturer", "part_name")

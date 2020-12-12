@@ -64,6 +64,7 @@ from django.contrib.auth.decorators import login_required
 
 ## Licenses
 class saveLicense(generics.CreateAPIView):
+    permission_classes = [RenterPermission]
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
@@ -72,6 +73,7 @@ class deleteLicense(generics.DestroyAPIView):
     serializer_class = LicenseSerializer
 
 class updateLicense(generics.RetrieveUpdateAPIView):
+    permission_classes = [RenterPermission]
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
 
@@ -226,18 +228,22 @@ class searchForPartner(APIView):
 
 ## Contracts
 class saveContract(generics.CreateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
 class getContract(generics.ListAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
 class deleteContract(generics.DestroyAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
 class updateContract(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
 
@@ -260,19 +266,23 @@ class searchForContract(APIView):
 ## Rents
 
 class saveRents(generics.CreateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Rents.objects.all()
     serializer_class = RentsSerializer
 
 class deleteRents(generics.DestroyAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Rents.objects.all()
     serializer_class = RentsSerializer
 
 class updateRents(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Rents.objects.all()
     serializer_class = RentsSerializer
     
 # Vehicles that are in the RENTS table (Can filter by renter)
 class getRentedOutVehicles(generics.ListAPIView):
+    permission_classes = [IsAdminUser]
     serializer_class = RentsSerializer
     def get_queryset(self):
         queryset = Rents.objects.all().select_related('vehicle')
@@ -308,7 +318,8 @@ class getAllRentedBy(APIView):
 ### Rents_Out (RENTABLES)
 
 class saveRentOut(generics.CreateAPIView):
-    queryset = Rents_Out.objects.all
+    permission_classes = [PartnerPermission]
+    queryset = Rents_Out.objects.all()
     serializer_class = Rents_OutSerializer
 
 # Vehicles that are rentable (Appear in RENTS_OUT table)
@@ -331,10 +342,12 @@ class getRentables(generics.ListAPIView):
         return queryset
 
 class deleteRentable(generics.DestroyAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Rents_Out.objects.all()
     serializer_class = Rents_OutSerializer
 
 class updateRentable(generics.RetrieveUpdateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Rents_Out.objects.all()
     serializer_class = Rents_OutSerializer
 
@@ -382,14 +395,17 @@ class getAvailableSpacecrafts(generics.ListAPIView):
         queryset = filterVehicleQueries(self.request.query_params, Spacecraft)
         return queryset
 class saveSpacecraft(generics.CreateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Spacecraft.objects.all()
     serializer_class = SpacecraftSerializerNoNest
 
 class deleteSpacecraft(generics.DestroyAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Spacecraft.objects.all()
     serializer_class = SpacecraftSerializer
 
 class updateSpacecraft(generics.RetrieveUpdateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Spacecraft.objects.all()
     serializer_class = SpacecraftSerializerNoNest
 
@@ -404,14 +420,17 @@ class getLand_Vehicles(generics.ListAPIView):
         queryset = filterVehicleQueries(self.request.query_params, Land_Vehicle)
         return queryset
 class saveLand_Vehicle(generics.CreateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Land_Vehicle.objects.all()
     serializer_class = Land_VehicleSerializerNoNest
 
 class deleteLand_Vehicle(generics.DestroyAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Land_Vehicle.objects.all()
     serializer_class = Land_VehicleSerializer
 
 class updateLand_Vehicle(generics.RetrieveUpdateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Land_Vehicle.objects.all()
     serializer_class = Land_VehicleSerializerNoNest
 
@@ -423,14 +442,17 @@ class getAircrafts(generics.ListAPIView):
         queryset = filterVehicleQueries(self.request.query_params, Aircraft)
         return queryset
 class saveAircraft(generics.CreateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Aircraft.objects.all()
     serializer_class = AircraftSerializerNoNest
 
 class deleteAircraft(generics.DestroyAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Aircraft.objects.all()
     serializer_class = AircraftSerializer
 
 class updateAircraft(generics.RetrieveUpdateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Aircraft.objects.all()
     serializer_class = AircraftSerializerNoNest
 
@@ -443,14 +465,17 @@ class getWatercrafts(generics.ListAPIView):
         queryset = filterVehicleQueries(self.request.query_params, Watercraft)
         return queryset
 class saveWatercraft(generics.CreateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Watercraft.objects.all()
     serializer_class = WatercraftSerializerNoNest
 
 class deleteWatercraft(generics.DestroyAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Watercraft.objects.all()
     serializer_class = WatercraftSerializer
 
 class updateWatercraft(generics.RetrieveUpdateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Watercraft.objects.all()
     serializer_class = WatercraftSerializerNoNest
 
@@ -460,14 +485,17 @@ class getVehicleTypes(generics.ListAPIView):
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 class saveVehicleTypes(generics.CreateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 
 class deleteVehicleTypes(generics.DestroyAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 
 class updateVehicleTypes(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Vehicle_Type.objects.all()
     serializer_class = Vehicle_TypeSerializer
 
@@ -496,13 +524,16 @@ class getSpaceshipParts(generics.ListAPIView):
     serializer_class = Made_Spaceship_PartSerializer
 
 class saveSpaceshipParts(generics.CreateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Made_Spaceship_Parts.objects.all()
     serializer_class = Made_Spaceship_PartSerializer
 
 class deleteSpaceshipParts(generics.DestroyAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Made_Spaceship_Parts.objects.all()
     serializer_class = Made_Spaceship_PartSerializer
 
 class updateSpaceshipParts(generics.RetrieveUpdateAPIView):
+    permission_classes = [PartnerPermission]
     queryset = Made_Spaceship_Parts.objects.all()
     serializer_class = Made_Spaceship_PartSerializer
